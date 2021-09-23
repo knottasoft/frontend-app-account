@@ -23,6 +23,9 @@ import PrintingInstructions from './PrintingInstructions';
 import ConnectedSuccessModal from './SuccessModal';
 import BeforeProceedingBanner from './BeforeProceedingBanner';
 
+import iconInfo from "../../assets/icon-info.svg"
+import iconWarning from "../../assets/icon-warning.svg"
+
 export class DeleteAccount extends React.Component {
   constructor(props) {
     super(props);
@@ -68,68 +71,100 @@ export class DeleteAccount extends React.Component {
 
     return (
       <div>
-        <h2 className="section-heading">
-          {intl.formatMessage(messages['account.settings.delete.account.header'])}
-        </h2>
-        <p>{intl.formatMessage(messages['account.settings.delete.account.subheader'])}</p>
-        <p>
-          {intl.formatMessage(
-            messages['account.settings.delete.account.text.1'],
-            { siteName: getConfig().SITE_NAME },
-          )}
-        </p>
-        <p>
-          {intl.formatMessage(
-            messages[deleteAccountText2MessageKey],
-            { siteName: getConfig().SITE_NAME },
-          )}
-        </p>
-        <p>
-          <PrintingInstructions />
-        </p>
-        <p className="text-danger h6">
-          {intl.formatMessage(messages['account.settings.delete.account.text.warning'],
-            { siteName: getConfig().SITE_NAME })}
-        </p>
-        <p>
-          <Hyperlink destination="https://support.edx.org/hc/en-us/sections/115004139268-Manage-Your-Account-Settings">
-            {intl.formatMessage(messages['account.settings.delete.account.text.change.instead'])}
-          </Hyperlink>
-        </p>
-        <p>
-          <Button
-            variant="outline-danger"
-            onClick={canDelete ? this.props.deleteAccountConfirmation : null}
-            disabled={!canDelete}
-          >
-            {intl.formatMessage(messages['account.settings.delete.account.button'])}
-          </Button>
-        </p>
+          <h2 className="section-heading mb-4">
+              <span className="pe-1">😢</span> {intl.formatMessage(messages['account.settings.delete.account.header'])}
+          </h2>
+          <p>{intl.formatMessage(messages['account.settings.delete.account.subheader'])}</p>
 
-        {isVerifiedAccount ? null : (
-          <BeforeProceedingBanner
-            instructionMessageId="account.settings.delete.account.please.activate"
-            supportArticleUrl="https://support.edx.org/hc/en-us/articles/115000940568-How-do-I-activate-my-account-"
+          <ul className="list-inline d-flex align-items-center mt-4">
+              <li className="list-inline-item"><img src={iconInfo} alt={null} /></li>
+              <li className="list-inline-item"><li className="list-inline-item">
+                  <strong>
+                      {intl.formatMessage(messages['account.settings.delete.account.text.1.title'])}
+                  </strong>
+              </li></li>
+          </ul>
+          <div className="bg-light pt-4 px-4 pb-2 mb-4">
+              <p>
+                  {intl.formatMessage(
+                      messages['account.settings.delete.account.text.1'],
+                      { siteName: getConfig().SITE_NAME },
+                  )}
+              </p>
+              <p>
+                  {intl.formatMessage(
+                      messages[deleteAccountText2MessageKey],
+                      { siteName: getConfig().SITE_NAME },
+                  )}
+              </p>
+              <p>
+                  <PrintingInstructions />
+              </p>
+          </div>
+
+          <ul className="list-inline d-flex align-items-center">
+              <li className="list-inline-item"><img src={iconWarning} alt={null} /></li>
+              <li className="list-inline-item">
+                  <strong>
+                      {intl.formatMessage(messages['account.settings.delete.account.title.warning'])}
+                  </strong>
+              </li>
+          </ul>
+          <div className="bg-alert-brand pt-4 px-4 pb-2 mb-4">
+              <p>
+                  {intl.formatMessage(messages['account.settings.delete.account.text.warning'],
+                      { siteName: getConfig().SITE_NAME })}
+              </p>
+          </div>
+
+          <ul className="list-inline d-flex align-items-center">
+              {isVerifiedAccount ? null : (
+                  <li className="list-inline-item">
+                      <BeforeProceedingBanner
+                          instructionMessageId="account.settings.delete.account.please.activate"
+                          supportArticleUrl="https://support.edx.org/hc/en-us/articles/115000940568-How-do-I-activate-my-account-"
+                      />
+                  </li>
+              )}
+
+              {hasLinkedTPA ? (
+                  <li className="list-inline-item">
+                      <BeforeProceedingBanner
+                          instructionMessageId="account.settings.delete.account.please.unlink"
+                          supportArticleUrl="https://support.edx.org/hc/en-us/articles/207206067"
+                      />
+                  </li>
+              ) : null}
+          </ul>
+
+          <ul className="list-inline">
+              <li className="list-inline-item pe-4">
+                  <Button
+                      variant="danger"
+                      onClick={canDelete ? this.props.deleteAccountConfirmation : null}
+                      disabled={!canDelete}
+                  >
+                      {intl.formatMessage(messages['account.settings.delete.account.button'])}
+                  </Button>
+              </li>
+              <li className="list-inline-item">
+                  <p>
+                      <Hyperlink destination="https://support.edx.org/hc/en-us/sections/115004139268-Manage-Your-Account-Settings">
+                          {intl.formatMessage(messages['account.settings.delete.account.text.change.instead'])}
+                      </Hyperlink>
+                  </p>
+              </li>
+          </ul>
+
+          <ConnectedConfirmationModal
+              status={status}
+              errorType={errorType}
+              onSubmit={this.handleSubmit}
+              onCancel={this.handleCancel}
+              onChange={this.handlePasswordChange}
+              password={this.state.password}
           />
-        )}
-
-        {hasLinkedTPA ? (
-          <BeforeProceedingBanner
-            instructionMessageId="account.settings.delete.account.please.unlink"
-            supportArticleUrl="https://support.edx.org/hc/en-us/articles/207206067"
-          />
-        ) : null}
-
-        <ConnectedConfirmationModal
-          status={status}
-          errorType={errorType}
-          onSubmit={this.handleSubmit}
-          onCancel={this.handleCancel}
-          onChange={this.handlePasswordChange}
-          password={this.state.password}
-        />
-
-        <ConnectedSuccessModal status={status} onClose={this.handleFinalClose} />
+          <ConnectedSuccessModal status={status} onClose={this.handleFinalClose} />
       </div>
     );
   }

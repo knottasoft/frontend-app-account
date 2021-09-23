@@ -4,64 +4,56 @@ import { NavHashLink } from 'react-router-hash-link';
 import Scrollspy from 'react-scrollspy';
 
 import { getConfig } from '@edx/frontend-platform';
+import {
+    Card
+} from 'react-bootstrap';
+
 import PropTypes from 'prop-types';
 import messages from './AccountSettingsPage.messages';
 
 function JumpNav({ intl, displayDemographicsLink }) {
   return (
-    <div className="jump-nav">
-      <Scrollspy
-        items={[
-          'basic-information',
-          'profile-information',
-          'demographics-information',
-          'social-media',
-          'site-preferences',
-          'linked-accounts',
-          'delete-account',
-        ]}
-        className="list-unstyled"
-        currentClassName="font-weight-bold"
-      >
-        <li>
-          <NavHashLink to="#basic-information">
+    <div className="menu sticky-top p-3 me-4 bg-light">
+      <div className="nav flex-column list-unstyled">
+        <li className="py-2">
+          <NavHashLink to="#basic-information" className="text-decoration-none">
             {intl.formatMessage(messages['account.settings.section.account.information'])}
           </NavHashLink>
         </li>
-        <li>
-          <NavHashLink to="#profile-information">
+        <li className="py-2">
+          <NavHashLink to="#profile-information" className="text-decoration-none">
             {intl.formatMessage(messages['account.settings.section.profile.information'])}
           </NavHashLink>
         </li>
         {getConfig().ENABLE_DEMOGRAPHICS_COLLECTION && displayDemographicsLink
-          && (
-          <li>
-            <NavHashLink to="#demographics-information">
-              {intl.formatMessage(messages['account.settings.section.demographics.information'])}
-            </NavHashLink>
-          </li>
-          )}
-        <li>
-          <NavHashLink to="#social-media">
+        && (
+            <li className="py-2">
+              <NavHashLink to="#demographics-information" className="text-decoration-none">
+                {intl.formatMessage(messages['account.settings.section.demographics.information'])}
+              </NavHashLink>
+            </li>
+        )}
+        <li className="py-2">
+          <NavHashLink to="#social-media" className="text-decoration-none">
             {intl.formatMessage(messages['account.settings.section.social.media'])}
           </NavHashLink>
         </li>
-        <li>
-          <NavHashLink to="#site-preferences">
+        <li className="py-2">
+          <NavHashLink to="#site-preferences" className="text-decoration-none">
             {intl.formatMessage(messages['account.settings.section.site.preferences'])}
           </NavHashLink>
         </li>
-        <li>
-          <NavHashLink to="#linked-accounts">
+        <li className="py-2">
+          <NavHashLink to="#linked-accounts" className="text-decoration-none">
             {intl.formatMessage(messages['account.settings.section.linked.accounts'])}
           </NavHashLink>
         </li>
-        <li>
-          <NavHashLink to="#delete-account">
+        <li className="py-2">
+          <NavHashLink to="#delete-account" className="text-decoration-none">
             {intl.formatMessage(messages['account.settings.jump.nav.delete.account'])}
           </NavHashLink>
         </li>
-      </Scrollspy>
+      </div>
     </div>
   );
 }

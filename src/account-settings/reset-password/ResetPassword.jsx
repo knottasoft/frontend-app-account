@@ -13,7 +13,7 @@ const ResetPassword = (props) => {
   const { email, intl, status } = props;
   return (
     <div className="form-group">
-      <h6 aria-level="3">
+      <h6 className="mb-2" aria-level="3">
         <FormattedMessage
           id="account.settings.editable.field.password.reset.label"
           defaultMessage="Password"
