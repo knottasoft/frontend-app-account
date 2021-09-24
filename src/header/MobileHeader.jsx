@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { injectIntl, intlShape } from '@edx/frontend-platform/i18n';
 import { getConfig } from '@edx/frontend-platform';
+import { Dropdown} from 'react-bootstrap';
 
 // Local Components
-import { Menu, MenuTrigger, MenuContent } from './Menu';
 import Avatar from './Avatar';
 import { LinkedLogo, Logo } from './Logo';
 
@@ -12,7 +12,8 @@ import { LinkedLogo, Logo } from './Logo';
 import messages from './Header.messages';
 
 // Assets
-import { MenuIcon } from './Icons';
+import avatar from '../assets/icon-user-mobile.svg'
+import menu from '../assets/icon-menu-mobile.svg'
 
 class MobileHeader extends React.Component {
     constructor(props) { // eslint-disable-line no-useless-constructor
@@ -20,64 +21,125 @@ class MobileHeader extends React.Component {
     }
 
     renderMainMenu() {
-        const { mainMenu } = this.props;
+        const { mainMenu, intl } = this.props;
 
         // Nodes are accepted as a prop
         if (!Array.isArray(mainMenu)) {
             return mainMenu;
         }
 
-        return mainMenu.map((menuItem) => {
-            const {
-                type,
-                href,
-                content,
-                submenuContent,
-            } = menuItem;
+        const MobileDropdownToggle = React.forwardRef(({ children, onClick }, ref) => (
+            <button
+                ref={ref}
+                className="m-0 px-3 d-flex bg-primary-dark justify-content-center align-items-center"
+                style={{ border: 0 }}
+                type="button"
+                onClick={(e) => {
+                    e.preventDefault();
+                    onClick(e);
+                }}
+            >
+                {children}
+            </button>
+        ));
 
-            if (type === 'item') {
-                return (
-                    <a key={`${type}-${content}`} className="nav-link" href={href}>
-                        {content}
-                    </a>
-                );
-            }
+        return (
+            <Dropdown className="btn-group dropstart">
+                <Dropdown.Toggle
+                    id="dropdown-basic"
+                    as={MobileDropdownToggle}
+                >
+                    <Avatar src={menu} alt="" />
+                    {/*<span className="navbar-toggler-icon" />*/}
+                    {/*{username}*/}
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                    {mainMenu.map((menuItem) => {
+                            const {
+                                type,
+                                href,
+                                content,
+                            } = menuItem;
 
-            return (
-                <Menu key={`${type}-${content}`} tag="div" className="nav-item">
-                    <MenuTrigger tag="a" role="button" tabIndex="0" className="nav-link">
-                        {content}
-                    </MenuTrigger>
-                    <MenuContent className="position-static pin-left pin-right py-2">
-                        {submenuContent}
-                    </MenuContent>
-                </Menu>
-            );
-        });
+                            if (type === 'item') {
+                                return (
+                                    <li className="nav-item pe-4">
+                                        <a
+                                            key={`${type}-${content}`}
+                                            className="dropdown-item"
+                                            type="button"
+                                            href={href}>{content}
+                                        </a>
+                                    </li>
+                                );
+                            }
+                    })}
+                </Dropdown.Menu>
+            </Dropdown>
+        );
+
     }
 
-    renderUserMenuItems() {
-        const { userMenu } = this.props;
+    renderUserMenu() {
+        const {
+            userMenu,
+            username,
+            intl,
+        } = this.props;
 
-        return userMenu.map(({ type, href, content }) => (
-            <li className="nav-item" key={`${type}-${content}`}>
-                <a className="nav-link" href={href}>{content}</a>
-            </li>
+        const RoundAvatarDropdownToggle = React.forwardRef(({ children, onClick }, ref) => (
+            <button
+                ref={ref}
+                className="m-0 px-3 d-flex bg-primary-dark justify-content-center align-items-center"
+                style={{ border: 0 }}
+                onClick={(e) => {
+                    e.preventDefault();
+                    onClick(e);
+                }}
+                aria-label={intl.formatMessage(messages['header.label.account.menu.for'], { username })}
+            >
+                {children}
+            </button>
         ));
+
+
+        return (
+            <Dropdown className="btn-group dropstart">
+                <Dropdown.Toggle
+                    id="dropdown-basic"
+                    as={RoundAvatarDropdownToggle}
+                >
+                    <Avatar src={avatar} alt="" />
+                    {/*<i className="fa fa-check"/>*/}
+                    {/*{username}*/}
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                    {userMenu.map(({ type, href, content }) => (
+                        <li>
+                            <a
+                                className="dropdown-item"
+                                type="button"
+                                key={`${type}-${content}`}
+                                href={href}
+                            >{content}
+                            </a>
+                        </li>
+                    ))}
+                </Dropdown.Menu>
+            </Dropdown>
+        );
     }
 
     renderLoggedOutItems() {
         const { loggedOutItems } = this.props;
+        return loggedOutItems.map((item, i, arr) => (
+            <button
+                key={`${item.type}-${item.content}`}
+                className={i < arr.length - 1 ? 'btn mr-2 btn-link' : 'btn mr-2 btn-outline-primary'}
+                href={item.href}
+            >{item.content}
+            </button>
 
-        return loggedOutItems.map(({ type, href, content }, i, arr) => (
-            <li className="nav-item px-3 my-2" key={`${type}-${content}`}>
-                <a
-                    className={i < arr.length - 1 ? 'btn btn-block btn-outline-primary' : 'btn btn-block btn-primary'}
-                    href={href}
-                >
-                    {content}
-                </a>
-            </li>
         ));
     }
 
@@ -87,67 +149,18 @@ class MobileHeader extends React.Component {
             logoAltText,
             logoDestination,
             loggedIn,
-            avatar,
-            username,
-            stickyOnMobile,
-            intl,
-            mainMenu,
-            userMenu,
-            loggedOutItems,
         } = this.props;
         const logoProps = { src: logo, alt: logoAltText, href: logoDestination };
-        const stickyClassName = stickyOnMobile ? 'sticky-top' : '';
-        const logoClasses = getConfig().AUTHN_MINIMAL_HEADER ? 'justify-content-left pl-3' : 'justify-content-center';
+        const logoClasses = getConfig().AUTHN_MINIMAL_HEADER ? 'mw-100' : null;
 
         return (
-            <header
-                aria-label={intl.formatMessage(messages['header.label.main.header'])}
-                className={`site-header-mobile d-flex justify-content-between align-items-center shadow ${stickyClassName}`}
-            >
-                <a className="nav-skip sr-only sr-only-focusable" href="#main">{intl.formatMessage(messages['header.label.skip.nav'])}</a>
-                {mainMenu.length > 0 ? (
-                    <div className="w-100 d-flex justify-content-start">
-
-                        <Menu className="position-static">
-                            <MenuTrigger
-                                tag="button"
-                                className="icon-button"
-                                aria-label={intl.formatMessage(messages['header.label.main.menu'])}
-                                title={intl.formatMessage(messages['header.label.main.menu'])}
-                            >
-                                <MenuIcon role="img" aria-hidden focusable="false" style={{ width: '1.5rem', height: '1.5rem' }} />
-                            </MenuTrigger>
-                            <MenuContent
-                                tag="nav"
-                                aria-label={intl.formatMessage(messages['header.label.main.nav'])}
-                                className="nav flex-column pin-left pin-right border-top shadow py-2"
-                            >
-                                {this.renderMainMenu()}
-                            </MenuContent>
-                        </Menu>
-                    </div>
-                ) : null}
-                <div className={`w-100 d-flex ${logoClasses}`}>
-                    { logoDestination === null ? <Logo className="logo" src={logo} alt={logoAltText} /> : <LinkedLogo className="logo" {...logoProps} itemType="http://schema.org/Organization" />}
-                </div>
-                {userMenu.length > 0 || loggedOutItems.length > 0 ? (
-                    <div className="w-100 d-flex justify-content-end align-items-center">
-                        <Menu tag="nav" aria-label={intl.formatMessage(messages['header.label.secondary.nav'])} className="position-static">
-                            <MenuTrigger
-                                tag="button"
-                                className="icon-button"
-                                aria-label={intl.formatMessage(messages['header.label.account.menu'])}
-                                title={intl.formatMessage(messages['header.label.account.menu'])}
-                            >
-                                <Avatar size="1.5rem" src={avatar} alt={username} />
-                            </MenuTrigger>
-                            <MenuContent tag="ul" className="nav flex-column pin-left pin-right border-top shadow py-2">
-                                {loggedIn ? this.renderUserMenuItems() : this.renderLoggedOutItems()}
-                            </MenuContent>
-                        </Menu>
-                    </div>
-                ) : null}
-            </header>
+            <nav className="navbar bg-brand py-0 d-flex align-items-stretch justify-content-between">
+                {this.renderMainMenu()}
+                {logoDestination === null ?
+                    <Logo className="logo py-2" src={logo} alt={logoAltText} width="40" height="40" /> :
+                    <LinkedLogo className="logo p-2" width="40" height="40" {...logoProps} />}
+                {loggedIn ? this.renderUserMenu() : this.renderLoggedOutItems()}
+            </nav>
         );
     }
 }
@@ -157,7 +170,6 @@ MobileHeader.propTypes = {
         PropTypes.node,
         PropTypes.array,
     ]),
-
     userMenu: PropTypes.arrayOf(PropTypes.shape({
         type: PropTypes.oneOf(['item', 'menu']),
         href: PropTypes.string,
@@ -174,7 +186,6 @@ MobileHeader.propTypes = {
     avatar: PropTypes.string,
     username: PropTypes.string,
     loggedIn: PropTypes.bool,
-    stickyOnMobile: PropTypes.bool,
 
     // i18n
     intl: intlShape.isRequired,
@@ -190,8 +201,6 @@ MobileHeader.defaultProps = {
     avatar: null,
     username: null,
     loggedIn: false,
-    stickyOnMobile: true,
-
 };
 
 export default injectIntl(MobileHeader);

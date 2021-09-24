@@ -20,9 +20,12 @@ $fa-font-path: "~font-awesome/fonts";
 @import "./header/header";
 
 $primary: #553C8B;
+$primaryDark: #3E2673;
 $light: #F6F7FA;
 $danger: #D01F28;
 $alert: #FFF4F4;
+$black: #373D44;
+$border-color: #EBEBEF;
 
 $theme-colors: (
         "primary":    $primary,
@@ -46,6 +49,10 @@ body {
 
 .text-muted {
   color: #999999 !important;
+}
+
+.text-primary {
+  color: $primary;
 }
 
 .text-secondary {
@@ -86,7 +93,42 @@ a.selected {
 }
 
 .bg-alert-brand {
-  background-color: #FFF4F4;
+  background-color: $alert;
+}
+
+.bg-primary-dark {
+  background-color: $primaryDark;
+}
+
+.accordion-item {
+  border-left: 0;
+  border-right: 0;
+  border-color: $border-color;
+}
+
+.accordion-button, {
+  color: $primary;
+  background-color: $light;
+}
+
+.accordion-button:focus {
+  color: $primary;
+  background-color: $light;
+  outline: none;
+  box-shadow:none !important;
+}
+
+.accordion-button:not(.collapsed)::after, .accordion-button::after {
+  background-image: url('./assets/icon-dropdown.svg');
+}
+
+.accordion-item:last-of-type, .accordion-item:first-of-type  {
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.accordion-body {
+  background-color: $light;
 }
 
 #app {

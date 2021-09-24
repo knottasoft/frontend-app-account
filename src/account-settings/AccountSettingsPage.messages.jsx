@@ -1,6 +1,21 @@
 import { defineMessages } from '@edx/frontend-platform/i18n';
 
 const messages = defineMessages({
+  'account.settings.page.breadcrumb.prev': {
+    id: 'account.settings.page.breadcrumb.prev',
+    defaultMessage: 'Dashboard',
+    description: 'The page heading for the account settings page.',
+  },
+  'account.settings.page.breadcrumb.current': {
+    id: 'account.settings.page.breadcrumb.current',
+    defaultMessage: 'Account Settings',
+    description: 'The page heading for the account settings page.',
+  },
+  'account.settings.page.accordition.title': {
+    id: 'account.settings.page.accordition.title',
+    defaultMessage: 'Quick Links',
+    description: 'The page heading for the account settings page.',
+  },
   'account.settings.page.heading': {
     id: 'account.settings.page.heading',
     defaultMessage: 'Account Settings',

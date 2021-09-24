@@ -23,8 +23,8 @@ function Avatar({
             style={{ height: size, width: size }}
             className={`${className}`}
         >
-      {avatar}
-    </span>
+            {avatar}
+        </span>
     );
 }
 

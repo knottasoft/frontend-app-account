@@ -137,24 +137,21 @@ export class DeleteAccount extends React.Component {
               ) : null}
           </ul>
 
-          <ul className="list-inline">
-              <li className="list-inline-item pe-4">
-                  <Button
-                      variant="danger"
-                      onClick={canDelete ? this.props.deleteAccountConfirmation : null}
-                      disabled={!canDelete}
-                  >
-                      {intl.formatMessage(messages['account.settings.delete.account.button'])}
-                  </Button>
-              </li>
-              <li className="list-inline-item">
-                  <p>
-                      <Hyperlink destination="https://support.edx.org/hc/en-us/sections/115004139268-Manage-Your-Account-Settings">
-                          {intl.formatMessage(messages['account.settings.delete.account.text.change.instead'])}
-                      </Hyperlink>
-                  </p>
-              </li>
-          </ul>
+          <div className="d-flex justify-content-center flex-column align-content-stretch">
+              <Button
+                  variant="danger"
+                  onClick={canDelete ? this.props.deleteAccountConfirmation : null}
+                  disabled={!canDelete}
+              >
+                  {intl.formatMessage(messages['account.settings.delete.account.button'])}
+              </Button>
+          </div>
+
+          <div className="mt-4 text-center">
+              <Hyperlink destination="https://support.edx.org/hc/en-us/sections/115004139268-Manage-Your-Account-Settings">
+                  {intl.formatMessage(messages['account.settings.delete.account.text.change.instead'])}
+              </Hyperlink>
+          </div>
 
           <ConnectedConfirmationModal
               status={status}

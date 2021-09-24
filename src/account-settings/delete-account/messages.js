@@ -18,7 +18,7 @@ const messages = defineMessages({
   },
   'account.settings.delete.account.text.1': {
     id: 'account.settings.delete.account.text.1',
-    defaultMessage: 'Please note: Deletion of your account and personal data is permanent and cannot be undone. {siteName} will not be able to recover your account or the data that is deleted.',
+    defaultMessage: 'Deletion of your account and personal data is permanent and cannot be undone. {siteName} will not be able to recover your account or the data that is deleted.',
     description: 'A message in the user account deletion area',
   },
   'account.settings.delete.account.text.2': {
