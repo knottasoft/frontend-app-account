@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { getConfig } from '@edx/frontend-platform';
 import { injectIntl, intlShape } from '@edx/frontend-platform/i18n';
 import { Button, Hyperlink } from '@edx/paragon';
+import { useMediaQuery } from 'react-responsive'
 
 // Actions
 import {
@@ -26,12 +27,34 @@ import BeforeProceedingBanner from './BeforeProceedingBanner';
 import iconInfo from "../../assets/icon-info.svg"
 import iconWarning from "../../assets/icon-warning.svg"
 
+const Desktop = ({ children }) => {
+    const isDesktop = useMediaQuery({ minWidth: 769 })
+    return isDesktop ? children : null
+}
+
+// const Tablet = ({ children }) => {
+//     const isTablet = useMediaQuery({ minWidth: 768, maxWidth: 991 })
+//     return isTablet ? children : null
+// }
+// const Default = ({ children }) => {
+//     const isNotMobile = useMediaQuery({ minWidth: 769 })
+//     return isNotMobile ? children : null
+// }
+
+const Mobile = ({ children }) => {
+    const isMobile = useMediaQuery({ maxWidth: 768 })
+    return isMobile ? children : null
+}
+
+
+
 export class DeleteAccount extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
       password: '',
+      isDesktopOrLaptop: false
     };
   }
 
@@ -137,21 +160,43 @@ export class DeleteAccount extends React.Component {
               ) : null}
           </ul>
 
-          <div className="d-flex justify-content-center flex-column align-content-stretch">
-              <Button
-                  variant="danger"
-                  onClick={canDelete ? this.props.deleteAccountConfirmation : null}
-                  disabled={!canDelete}
-              >
-                  {intl.formatMessage(messages['account.settings.delete.account.button'])}
-              </Button>
-          </div>
+          <Desktop>
+              <ul className="list-inline">
+                  <li className="list-inline-item pe-4">
+                      <Button
+                          variant="danger"
+                          onClick={canDelete ? this.props.deleteAccountConfirmation : null}
+                          disabled={!canDelete}
+                      >
+                          {intl.formatMessage(messages['account.settings.delete.account.button'])}
+                      </Button>
+                  </li>
+                  <li className="list-inline-item">
+                      <p>
+                          <Hyperlink destination="https://support.edx.org/hc/en-us/sections/115004139268-Manage-Your-Account-Settings">
+                              {intl.formatMessage(messages['account.settings.delete.account.text.change.instead'])}
+                          </Hyperlink>
+                      </p>
+                  </li>
+              </ul>
+          </Desktop>
+          <Mobile>
+              <div className="d-flex justify-content-center flex-column align-content-stretch">
+                  <Button
+                      variant="danger"
+                      onClick={canDelete ? this.props.deleteAccountConfirmation : null}
+                      disabled={!canDelete}
+                  >
+                      {intl.formatMessage(messages['account.settings.delete.account.button'])}
+                  </Button>
+              </div>
 
-          <div className="mt-4 text-center">
-              <Hyperlink destination="https://support.edx.org/hc/en-us/sections/115004139268-Manage-Your-Account-Settings">
-                  {intl.formatMessage(messages['account.settings.delete.account.text.change.instead'])}
-              </Hyperlink>
-          </div>
+              <div className="mt-4 text-center">
+                  <Hyperlink destination="https://support.edx.org/hc/en-us/sections/115004139268-Manage-Your-Account-Settings">
+                      {intl.formatMessage(messages['account.settings.delete.account.text.change.instead'])}
+                  </Hyperlink>
+              </div>
+          </Mobile>
 
           <ConnectedConfirmationModal
               status={status}
