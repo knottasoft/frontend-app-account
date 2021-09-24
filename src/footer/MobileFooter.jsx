@@ -45,7 +45,7 @@ class MobileFooter extends React.Component {
         const logoProps = { src: logo, alt: logoAltText, href: logoDestination };
 
         return (
-            <nav className="navbar bg-brand d-flex flex-row justify-content-between py-0 bg-black">
+            <nav className="navbar navbar-expand-sm bg-brand d-flex flex-row justify-content-between py-0 bg-black">
                 <div className="">
                     <img src={pattern} alt={null} className="img-fluid h-100" />
                 </div>

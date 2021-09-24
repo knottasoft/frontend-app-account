@@ -745,14 +745,10 @@ class MobileAccountSettingsPage extends React.Component {
               displayDemographicsLink={this.props.formValues.shouldDisplayDemographicsSection}
           />
         </div>
-        <div className="ps-4">
-          <div className="row">
-            <div className="col-12">
-              {loading ? this.renderLoading() : null}
-              {loaded ? this.renderContent() : null}
-              {loadingError ? this.renderError() : null}
-            </div>
-          </div>
+        <div className="col-12 px-4">
+          {loading ? this.renderLoading() : null}
+          {loaded ? this.renderContent() : null}
+          {loadingError ? this.renderError() : null}
         </div>
       </div>
     );
