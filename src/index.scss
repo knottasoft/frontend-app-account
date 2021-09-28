@@ -131,6 +131,21 @@ a.selected {
   background-color: $light;
 }
 
+.form-control {
+  border-radius: 0;
+}
+
+input[type="text"], input[type="email"], textarea, select {
+  outline: none;
+  box-shadow:none !important;
+  border:1px solid #553C8B !important;
+  background-color: #F6F7FA !important;
+  border-radius: 2px;
+  box-sizing: border-box;
+}
+
+// EDX
+
 #app {
   min-height: 100vh;
   display: flex;
@@ -153,19 +168,6 @@ a.selected {
   .disclaimer {
     font-size: 	0.75rem;
   }
-}
-
-.form-control {
-  border-radius: 0;
-}
-
-input[type="text"], input[type="email"], textarea, select {
-  outline: none;
-  box-shadow:none !important;
-  border:1px solid #553C8B !important;
-  background-color: #F6F7FA !important;
-  border-radius: 2px;
-  box-sizing: border-box;
 }
 
 .checkboxOption {
