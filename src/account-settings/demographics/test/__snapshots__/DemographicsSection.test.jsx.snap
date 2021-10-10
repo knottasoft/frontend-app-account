@@ -22,7 +22,6 @@ exports[`DemographicsSection should render 1`] = `
       <span
         className="d-inline-block align-text-top"
       >
-         
         <span
           className="pgn__icon"
           style={
@@ -664,7 +663,6 @@ exports[`DemographicsSection should render an Alert if an error occurs 1`] = `
       <span
         className="d-inline-block align-text-top"
       >
-         
         <span
           className="pgn__icon"
           style={
@@ -1317,10 +1315,10 @@ exports[`DemographicsSection should render an Alert when demographicsOptions pro
       target="_blank"
     >
       Why does localhost collect this information?
+
       <span
         className="d-inline-block align-text-top"
       >
-         
         <span
           className="pgn__icon"
           style={
@@ -1389,7 +1387,6 @@ exports[`DemographicsSection should render ethnicity correctly when multiple opt
       <span
         className="d-inline-block align-text-top"
       >
-         
         <span
           className="pgn__icon"
           style={
@@ -2023,8 +2020,7 @@ exports[`DemographicsSection should render ethnicity text correctly 1`] = `
       Why does localhost collect this information?
       <span
         className="d-inline-block align-text-top"
-      >
-         
+      >  
         <span
           className="pgn__icon"
           style={
@@ -2658,8 +2654,7 @@ exports[`DemographicsSection should set user input correctly when user provides 
       Why does localhost collect this information?
       <span
         className="d-inline-block align-text-top"
-      >
-         
+      > 
         <span
           className="pgn__icon"
           style={
@@ -3301,7 +3296,6 @@ exports[`DemographicsSection should set user input correctly when user provides 
       <span
         className="d-inline-block align-text-top"
       >
-         
         <span
           className="pgn__icon"
           style={

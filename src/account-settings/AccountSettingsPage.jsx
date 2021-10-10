@@ -43,6 +43,8 @@ import {
 import { fetchSiteLanguages } from './site-language';
 import CoachingToggle from './coaching/CoachingToggle';
 import DemographicsSection from './demographics/DemographicsSection';
+import { getStudentDocuments, getStudentDocumentTypes } from './documents/data/actions'
+import DocumentList from './documents/DocumentList';
 
 class AccountSettingsPage extends React.Component {
   constructor(props, context) {
@@ -68,11 +70,14 @@ class AccountSettingsPage extends React.Component {
       '#site-preferences': React.createRef(),
       '#linked-accounts': React.createRef(),
       '#delete-account': React.createRef(),
+      '#documents': React.createRef(),
     };
   }
 
   componentDidMount() {
     this.props.fetchSettings();
+    this.props.getStudentDocuments();
+    this.props.getStudentDocumentTypes();
     this.props.fetchSiteLanguages();
     sendTrackingLogEvent('edx.user.settings.viewed', {
       page: 'account',
@@ -651,6 +656,10 @@ class AccountSettingsPage extends React.Component {
           <ThirdPartyAuth />
         </div>
 
+        <div className="account-section" id="documents" ref={this.navLinkRefs['#documents']}>
+          <DocumentList/>
+        </div>
+
         <div className="account-section" id="delete-account" ref={this.navLinkRefs['#delete-account']}>
           <DeleteAccount
             isVerifiedAccount={this.props.isActive}
@@ -787,6 +796,8 @@ AccountSettingsPage.propTypes = {
   saveSettings: PropTypes.func.isRequired,
   fetchSettings: PropTypes.func.isRequired,
   tpaProviders: PropTypes.arrayOf(PropTypes.object),
+  //getStudentDocuments: PropTypes.func.isRequired,
+  //studentDocuments: PropTypes.object,
 };
 
 AccountSettingsPage.defaultProps = {
@@ -802,6 +813,7 @@ AccountSettingsPage.defaultProps = {
   tpaProviders: [],
   isActive: true,
   secondary_email_enabled: false,
+  //studentDocuments: null,
 };
 
 export default connect(accountSettingsPageSelector, {
@@ -809,4 +821,6 @@ export default connect(accountSettingsPageSelector, {
   saveSettings,
   updateDraft,
   fetchSiteLanguages,
+  getStudentDocuments,
+  getStudentDocumentTypes,
 })(injectIntl(AccountSettingsPage));

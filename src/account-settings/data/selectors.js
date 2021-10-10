@@ -176,6 +176,11 @@ const activeAccountSelector = createSelector(
   accountSettings => accountSettings.values.is_active,
 );
 
+export const studentDocumentsSelector = createSelector(
+  accountSettingsSelector,
+  accountSettings => accountSettings.studentDocuments
+)
+
 export const siteLanguageSelector = createSelector(
   previousSiteLanguageSelector,
   draftsSelector,
@@ -200,6 +205,7 @@ export const accountSettingsPageSelector = createSelector(
   timeZonesSelector,
   countryTimeZonesSelector,
   activeAccountSelector,
+  studentDocumentsSelector,
   (
     accountSettings,
     siteLanguageOptions,
@@ -210,6 +216,7 @@ export const accountSettingsPageSelector = createSelector(
     timeZoneOptions,
     countryTimeZoneOptions,
     activeAccount,
+    studentDocuments,
   ) => ({
     siteLanguageOptions,
     siteLanguage,
@@ -223,6 +230,7 @@ export const accountSettingsPageSelector = createSelector(
     profileDataManager,
     staticFields,
     tpaProviders: accountSettings.thirdPartyAuth.providers,
+    studentDocuments
   }),
 );
 
