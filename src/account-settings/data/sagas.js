@@ -39,7 +39,11 @@ import { saga as thirdPartyAuthSaga } from '../third-party-auth';
 import { saga as studentDocumentsSaga } from '../documents'
 
 // Services
-import { getSettings, patchSettings, getTimeZones } from './service';
+import {
+  getSettings,
+  patchSettings,
+  getTimeZones,
+} from './service';
 
 export function* handleFetchSettings() {
   try {

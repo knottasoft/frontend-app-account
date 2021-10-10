@@ -37,9 +37,11 @@ function EditableField(props) {
     onChange,
     isEditing,
     isEditable,
+    isGrayedOut,
     intl,
     ...others
   } = props;
+
   const id = `field-${name}`;
 
   const handleSubmit = (e) => {
@@ -104,6 +106,7 @@ function EditableField(props) {
         editing: (
           <form onSubmit={handleSubmit}>
             <ValidationFormGroup
+                className="mb-1"
               for={id}
               invalid={error != null}
               invalidMessage={error}
@@ -122,47 +125,47 @@ function EditableField(props) {
               />
               <>{others.children}</>
             </ValidationFormGroup>
-            <p>
+
+            <div className="hstack gap-2">
               <StatefulButton
-                type="submit"
-                className="mr-2"
-                state={saveState}
-                labels={{
-                  default: intl.formatMessage(messages['account.settings.editable.field.action.save']),
-                }}
-                onClick={(e) => {
-                  // Swallow clicks if the state is pending.
-                  // We do this instead of disabling the button to prevent
-                  // it from losing focus (disabled elements cannot have focus).
-                  // Disabling it would causes upstream issues in focus management.
-                  // Swallowing the onSubmit event on the form would be better, but
-                  // we would have to add that logic for every field given our
-                  // current structure of the application.
-                  if (saveState === 'pending') { e.preventDefault(); }
-                }}
-                disabledStates={[]}
+                  size="md"
+                  type="submit"
+                  state={saveState}
+                  labels={{
+                    default: intl.formatMessage(messages['account.settings.editable.field.action.save']),
+                  }}
+                  onClick={(e) => {
+                    // Swallow clicks if the state is pending.
+                    // We do this instead of disabling the button to prevent
+                    // it from losing focus (disabled elements cannot have focus).
+                    // Disabling it would causes upstream issues in focus management.
+                    // Swallowing the onSubmit event on the form would be better, but
+                    // we would have to add that logic for every field given our
+                    // current structure of the application.
+                    if (saveState === 'pending') { e.preventDefault(); }
+                  }}
+                  disabledStates={[]}
               />
               <Button
-                variant="outline-primary"
-                onClick={handleCancel}
+                  size="md"
+                  variant="outline-primary"
+                  onClick={handleCancel}
               >
                 {intl.formatMessage(messages['account.settings.editable.field.action.cancel'])}
               </Button>
-            </p>
+            </div>
+
           </form>
         ),
         default: (
           <div className="form-group">
             <div className="d-flex align-items-start">
-              <h6 aria-level="3">{label}</h6>
-              {isEditable ? (
-                <Button variant="link" onClick={handleEdit} className="ml-3">
-                  <FontAwesomeIcon className="mr-1" icon={faPencilAlt} />{intl.formatMessage(messages['account.settings.editable.field.action.edit'])}
-                </Button>
-              ) : null}
+              <h6 className="mb-2" aria-level="3">{label}</h6>
             </div>
-            <p data-hj-suppress>{renderValue(value)}</p>
-            <p className="small text-muted mt-n2">{renderConfirmationMessage() || helpText}</p>
+            <Button variant="link" disabled={!isEditable} onClick={handleEdit}>
+              {renderValue(value)}
+            </Button>
+            <p className="small text-muted mt-2">{renderConfirmationMessage() || helpText}</p>
           </div>
         ),
       }}
@@ -172,7 +175,7 @@ function EditableField(props) {
 
 EditableField.propTypes = {
   name: PropTypes.string.isRequired,
-  label: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  label: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.node]),
   emptyLabel: PropTypes.node,
   type: PropTypes.string.isRequired,
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
@@ -196,6 +199,7 @@ EditableField.propTypes = {
   onChange: PropTypes.func.isRequired,
   isEditing: PropTypes.bool,
   isEditable: PropTypes.bool,
+  isGrayedOut: PropTypes.bool,
   intl: intlShape.isRequired,
 };
 
@@ -211,6 +215,7 @@ EditableField.defaultProps = {
   helpText: undefined,
   isEditing: false,
   isEditable: true,
+  isGrayedOut: false,
   userSuppliedValue: undefined,
 };
 

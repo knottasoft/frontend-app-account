@@ -13,13 +13,18 @@ import {
   getCountryList,
   getLanguageList,
 } from '@edx/frontend-platform/i18n';
-import { Hyperlink } from '@edx/paragon';
+
+import { Button, Alert} from 'react-bootstrap';
+
+import {
+  Hyperlink, Icon,
+} from '@edx/paragon';
+import { CheckCircle, Error, WarningFilled } from '@edx/paragon/icons';
 
 import messages from './AccountSettingsPage.messages';
 import { fetchSettings, saveSettings, updateDraft } from './data/actions';
 import { accountSettingsPageSelector } from './data/selectors';
 import PageLoading from './PageLoading';
-import Alert from './Alert';
 import JumpNav from './JumpNav';
 import DeleteAccount from './delete-account';
 import EditableField from './EditableField';
@@ -27,6 +32,7 @@ import ResetPassword from './reset-password';
 import ThirdPartyAuth from './third-party-auth';
 import BetaLanguageBanner from './BetaLanguageBanner';
 import EmailField from './EmailField';
+import OneTimeDismissibleAlert from './OneTimeDismissibleAlert';
 import {
   YEAR_OF_BIRTH_OPTIONS,
   EDUCATION_LEVELS,
@@ -141,13 +147,28 @@ class AccountSettingsPage extends React.Component {
     })),
   }));
 
+  sortDates = (a, b) => {
+    const aTimeSinceEpoch = new Date(a).getTime();
+    const bTimeSinceEpoch = new Date(b).getTime();
+
+    return bTimeSinceEpoch - aTimeSinceEpoch;
+  }
+
+  sortVerifiedNameRecords = verifiedNameHistory => {
+    if (Array.isArray(verifiedNameHistory)) {
+      return [...verifiedNameHistory].sort(this.sortDates);
+    }
+
+    return [];
+  }
+
   handleEditableFieldChange = (name, value) => {
     this.props.updateDraft(name, value);
-  };
+  }
 
   handleSubmit = (formId, values) => {
     this.props.saveSettings(formId, values);
-  };
+  }
 
   isEditable(fieldName) {
     return !this.props.staticFields.includes(fieldName);
@@ -166,7 +187,7 @@ class AccountSettingsPage extends React.Component {
 
     return (
       <div>
-        <Alert className="alert alert-danger" role="alert">
+        <Alert variant="danger">
           <FormattedMessage
             id="account.settings.message.duplicate.tpa.provider"
             defaultMessage="The {provider} account you selected is already linked to another {siteName} account."
@@ -188,7 +209,7 @@ class AccountSettingsPage extends React.Component {
 
     return (
       <div>
-        <Alert className="alert alert-primary" role="alert">
+        <Alert variant="info">
           <FormattedMessage
             id="account.settings.message.managed.settings"
             defaultMessage="Your profile settings are managed by {managerTitle}. Contact your administrator or {support} for help."
@@ -209,6 +230,111 @@ class AccountSettingsPage extends React.Component {
         </Alert>
       </div>
     );
+  }
+
+  renderVerifiedNameSuccessMessage = () => (
+    <OneTimeDismissibleAlert
+      id="dismissedVerifiedNameSuccessMessage"
+      variant="success"
+      icon={CheckCircle}
+      header={this.props.intl.formatMessage(messages['account.settings.field.name.verified.success.message.header'])}
+      body={this.props.intl.formatMessage(messages['account.settings.field.name.verified.success.message'])}
+    />
+  )
+
+  renderVerifiedNameFailureMessage = (verifiedName, created) => {
+    const dateValue = new Date(created).valueOf();
+    const id = `dismissedVerifiedNameFailureMessage-${verifiedName}-${dateValue}`;
+
+    return (
+      <OneTimeDismissibleAlert
+        id={id}
+        variant="danger"
+        icon={Error}
+        header={this.props.intl.formatMessage(messages['account.settings.field.name.verified.failure.message.header'])}
+        body={
+          (
+            <>
+              <div className="d-flex flex-row">
+                {this.props.intl.formatMessage(
+                  messages['account.settings.field.name.verified.failure.message'], {
+                    verifiedName,
+                  },
+                )}
+              </div>
+              <div className="d-flex flex-row-reverse mt-3">
+                <Button
+                  variant="primary"
+                  href="https://support.edx.org/hc/en-us/articles/360004381594-Why-was-my-ID-verification-denied"
+                >
+                  {this.props.intl.formatMessage(messages['account.settings.field.name.verified.failure.message.help.link'])}
+                </Button>{' '}
+              </div>
+            </>
+          )
+        }
+      />
+    );
+  }
+
+  renderVerifiedNameSubmittedMessage = () => (
+    <Alert
+      variant="warning"
+      icon={WarningFilled}
+    >
+      <Alert.Heading>
+        {this.props.intl.formatMessage(messages['account.settings.field.name.verified.submitted.message.header'])}
+      </Alert.Heading>
+      <p>
+        {this.props.intl.formatMessage(messages['account.settings.field.name.verified.submitted.message'])}
+      </p>
+    </Alert>
+  )
+
+  renderVerifiedNameMessage = verifiedNameRecord => {
+    const { created, status, verified_name: verifiedName } = verifiedNameRecord;
+
+    switch (status) {
+      case 'approved':
+        return this.renderVerifiedNameSuccessMessage();
+      case 'denied':
+        return this.renderVerifiedNameFailureMessage(verifiedName, created);
+      case 'submitted':
+        return this.renderVerifiedNameSubmittedMessage();
+      default:
+        return null;
+    }
+  }
+
+  renderVerifiedNameIcon = (status) => {
+    switch (status) {
+      case 'approved':
+        return (<Icon src={CheckCircle} className="ml-1" style={{ height: '18px', width: '18px', color: 'green' }} />);
+      case 'submitted':
+        return (<Icon src={WarningFilled} className="ml-1" style={{ height: '18px', width: '18px', color: 'yellow' }} />);
+      default:
+        return null;
+    }
+  }
+
+  renderVerifiedNameHelpText = (status) => {
+    switch (status) {
+      case 'approved':
+        return (this.props.intl.formatMessage(messages['account.settings.field.name.verified.help.text.verified']));
+      case 'submitted':
+        return (this.props.intl.formatMessage(messages['account.settings.field.name.verified.help.text.submitted']));
+      default:
+        return null;
+    }
+  }
+
+  renderFullNameHelpText = (status) => {
+    switch (status) {
+      case 'submitted':
+        return (this.props.intl.formatMessage(messages['account.settings.field.full.name.help.text.submitted']));
+      default:
+        return (this.props.intl.formatMessage(messages['account.settings.field.full.name.help.text']));
+    }
   }
 
   renderEmptyStaticFieldMessage() {
@@ -266,6 +392,9 @@ class AccountSettingsPage extends React.Component {
     // Show State field only if the country is US (could include Canada later)
     const showState = this.props.formValues.country === COUNTRY_WITH_STATES;
 
+    const { verifiedName } = this.props.formValues;
+    const verifiedNameEnabled = this.props.formValues.verifiedNameHistory.verified_name_enabled;
+
     const timeZoneOptions = this.getLocalizedTimeZoneOptions(
       this.props.timeZoneOptions,
       this.props.countryTimeZoneOptions,
@@ -273,10 +402,11 @@ class AccountSettingsPage extends React.Component {
     );
 
     const hasLinkedTPA = findIndex(this.props.tpaProviders, provider => provider.connected) >= 0;
-
     return (
       <>
         <div className="account-section" id="basic-information" ref={this.navLinkRefs['#basic-information']}>
+          {verifiedNameEnabled && this.renderVerifiedNameMessage(this.props.formValues.mostRecentVerifiedName)}
+
           <h2 className="section-heading">
             {this.props.intl.formatMessage(messages['account.settings.section.account.information'])}
           </h2>
@@ -305,10 +435,44 @@ class AccountSettingsPage extends React.Component {
                 ? this.props.intl.formatMessage(messages['account.settings.field.full.name.empty'])
                 : this.renderEmptyStaticFieldMessage()
             }
-            helpText={this.props.intl.formatMessage(messages['account.settings.field.full.name.help.text'])}
-            isEditable={this.isEditable('name')}
+            helpText={
+              verifiedNameEnabled && verifiedName
+                ? this.renderFullNameHelpText(verifiedName.status)
+                : this.props.intl.formatMessage(messages['account.settings.field.full.name.help.text'])
+            }
+            isEditable={
+              verifiedNameEnabled && verifiedName
+                ? this.isEditable('verifiedName') && this.isEditable('name')
+                : this.isEditable('name')
+            }
+            isGrayedOut={
+              verifiedNameEnabled && verifiedName && !this.isEditable('verifiedName')
+            }
             {...editableFieldProps}
           />
+          {verifiedNameEnabled && verifiedName
+            && (
+            <EditableField
+              name="verifiedName"
+              type="text"
+              value={this.props.formValues.verifiedName.verified_name}
+              label={
+                (
+                  <div className="d-flex">
+                    {this.props.intl.formatMessage(messages['account.settings.field.name.verified'])}
+                    {
+                      this.renderVerifiedNameIcon(verifiedName.status)
+                    }
+                  </div>
+                )
+              }
+              helpText={this.renderVerifiedNameHelpText(verifiedName.status)}
+              isEditable={this.isEditable('verifiedName')}
+              isGrayedOut={!this.isEditable('verifiedName')}
+              {...(this.isEditable('verifiedName') && editableFieldProps)}
+            />
+            )}
+
           <EmailField
             name="email"
             label={this.props.intl.formatMessage(messages['account.settings.field.email'])}
@@ -587,6 +751,24 @@ AccountSettingsPage.propTypes = {
     }),
     state: PropTypes.string,
     shouldDisplayDemographicsSection: PropTypes.bool,
+    verifiedNameHistory: PropTypes.shape({
+      verified_name_enabled: PropTypes.bool,
+      use_verified_name_for_certs: PropTypes.bool,
+      results: PropTypes.arrayOf(
+        PropTypes.shape({
+          verified_name: PropTypes.string,
+          status: PropTypes.string,
+        }),
+      ),
+    }),
+    verifiedName: PropTypes.shape({
+      verified_name: PropTypes.string,
+      status: PropTypes.string,
+    }),
+    mostRecentVerifiedName: PropTypes.shape({
+      verified_name: PropTypes.string,
+      status: PropTypes.string,
+    }),
   }).isRequired,
   siteLanguage: PropTypes.shape({
     previousValue: PropTypes.string,

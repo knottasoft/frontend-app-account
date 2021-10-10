@@ -176,12 +176,49 @@ export async function shouldDisplayDemographicsQuestions() {
   return false;
 }
 
+export async function getVerifiedName() {
+  let data;
+  const client = getAuthenticatedHttpClient();
+  try {
+    const requestUrl = `${getConfig().LMS_BASE_URL}/api/edx_name_affirmation/v1/verified_name`;
+    ({ data } = await client.get(requestUrl));
+  } catch (error) {
+    return {};
+  }
+
+  return data;
+}
+
+export async function getVerifiedNameHistory() {
+  let data;
+  const client = getAuthenticatedHttpClient();
+  try {
+    const requestUrl = `${getConfig().LMS_BASE_URL}/api/edx_name_affirmation/v1/verified_name/history`;
+    ({ data } = await client.get(requestUrl));
+  } catch (error) {
+    return {};
+  }
+
+  return data;
+}
+
 /**
  * A single function to GET everything considered a setting.
  * Currently encapsulates Account, Preferences, Coaching, ThirdPartyAuth, and Demographics
  */
 export async function getSettings(username, userRoles, userId) {
-  const results = await Promise.all([
+  const [
+    account,
+    preferences,
+    thirdPartyAuthProviders,
+    profileDataManager,
+    timeZones,
+    coaching,
+    shouldDisplayDemographicsQuestionsResponse,
+    demographics,
+    demographicsOptions,
+    verifiedNameHistory,
+  ] = await Promise.all([
     getAccount(username),
     getPreferences(username),
     getThirdPartyAuthProviders(),
@@ -191,18 +228,20 @@ export async function getSettings(username, userRoles, userId) {
     getConfig().ENABLE_DEMOGRAPHICS_COLLECTION && shouldDisplayDemographicsQuestions(),
     getConfig().ENABLE_DEMOGRAPHICS_COLLECTION && getDemographics(userId),
     getConfig().ENABLE_DEMOGRAPHICS_COLLECTION && getDemographicsOptions(),
+    getVerifiedNameHistory(),
   ]);
 
   return {
-    ...results[0],
-    ...results[1],
-    thirdPartyAuthProviders: results[2],
-    profileDataManager: results[3],
-    timeZones: results[4],
-    coaching: results[5],
-    shouldDisplayDemographicsSection: results[6],
-    ...results[7], // demographics
-    demographicsOptions: results[8],
+    ...account,
+    ...preferences,
+    thirdPartyAuthProviders,
+    profileDataManager,
+    timeZones,
+    coaching,
+    shouldDisplayDemographicsSection: shouldDisplayDemographicsQuestionsResponse,
+    ...demographics,
+    demographicsOptions,
+    verifiedNameHistory,
   };
 }
 

@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { AppContext } from '@edx/frontend-platform/react';
 
-import { getProfileDataManager } from '../account-settings/data/service';
+import { getProfileDataManager, getVerifiedName } from '../account-settings/data/service';
 import PageLoading from '../account-settings/PageLoading';
 
 import { getExistingIdVerification, getEnrollments } from './data/service';
@@ -76,8 +76,25 @@ export default function IdVerificationContextProvider({ children }) {
     }
   }, [authenticatedUser]);
 
+  const [verifiedName, setVerifiedName] = useState('');
+  useEffect(() => {
+    // Make the API call to retrieve VerifiedName of the learner.
+    // If the learner do not have such attribute from their account, that's OK.
+    // If the learner do have the attribute, the VerifiedName is overriding authenticatedUser.name
+    (async () => {
+      const verifiedNameResponse = await getVerifiedName();
+      if (verifiedNameResponse) {
+        setVerifiedName(verifiedNameResponse.verified_name);
+      }
+    })();
+  }, []);
+
   const [optimizelyExperimentName, setOptimizelyExperimentName] = useState('');
   const [shouldUseCamera, setShouldUseCamera] = useState(false);
+
+  // The following are used to keep track of how a user has submitted photos
+  const [portraitPhotoMode, setPortraitPhotoMode] = useState('');
+  const [idPhotoMode, setIdPhotoMode] = useState('');
 
   // If the user reaches the end of the flow and goes back to retake their photos,
   // this flag ensures that they are directed straight back to the summary panel
@@ -91,10 +108,12 @@ export default function IdVerificationContextProvider({ children }) {
     mediaStream,
     mediaAccess,
     userId: authenticatedUser.userId,
-    nameOnAccount: authenticatedUser.name,
+    nameOnAccount: verifiedName || authenticatedUser.name,
     profileDataManager,
     optimizelyExperimentName,
     shouldUseCamera,
+    portraitPhotoMode,
+    idPhotoMode,
     reachedSummary,
     setExistingIdVerification,
     setFacePhotoFile,
@@ -102,6 +121,8 @@ export default function IdVerificationContextProvider({ children }) {
     setIdPhotoName,
     setOptimizelyExperimentName,
     setShouldUseCamera,
+    setPortraitPhotoMode,
+    setIdPhotoMode,
     setReachedSummary,
     tryGetUserMedia: async () => {
       try {

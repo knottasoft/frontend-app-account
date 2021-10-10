@@ -1,15 +1,68 @@
 $fa-font-path: "~font-awesome/fonts";
 @import "~font-awesome/scss/font-awesome";
 
-@import "~@edx/brand/paragon/fonts";
+//@import "~@edx/brand/paragon/fonts";
 @import "~@edx/brand/paragon/variables";
-@import "~@edx/paragon/scss/core/core";
-@import "~@edx/brand/paragon/overrides";
-@import "~@edx/frontend-component-header/dist/index";
-@import "~@edx/frontend-component-footer/dist/footer";
+//@import "~@edx/paragon/scss/core/core";
+//@import "~@edx/brand/paragon/overrides";
+//@import "~@edx/frontend-component-header/dist/index";
+//@import "~@edx/frontend-component-footer/dist/footer";
+
+//Bootstrap
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+
+@import "~bootstrap/scss/bootstrap-grid";
+@import "~bootstrap/scss/mixins/breakpoints";
 
 @import "./account-settings/style";
 @import "./id-verification/id-verification";
+@import "./header/header";
+
+$primary: #553C8B;
+$primaryDark: #3E2673;
+$light: #F6F7FA;
+$danger: #D01F28;
+$alert: #FFF4F4;
+$black: #373D44;
+$border-color: #EBEBEF;
+
+$theme-colors: (
+        "primary":    $primary,
+        "secondary":  $secondary,
+        "success":    $success,
+        "info":       $info,
+        "warning":    $warning,
+        "danger":     $danger,
+        "light":      $light,
+        "dark":       $dark,
+        "alert":      $alert
+);
+
+@import "~bootstrap/scss/bootstrap";
+
+$breadcrumb-divider: url("assets/Breadcrumbs_spacer.png");
+
+body {
+  color: #333333 !important;
+}
+
+.text-muted {
+  color: #999999 !important;
+}
+
+.text-primary {
+  color: $primary;
+}
+
+.text-secondary {
+  color: #777777 !important;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+  color: #6c757d;
+  content: var(--bs-breadcrumb-divider, $breadcrumb-divider) !important;
+}
 
 .word-break-all {
   word-break: break-all !important;
@@ -17,17 +70,81 @@ $fa-font-path: "~font-awesome/fonts";
 
 // TODO: Update edx-bootstrap theme to incorporate these edits.
 .btn, a.btn {
+  border-radius: 0;
   text-decoration: none;
   &:hover {
     text-decoration: none;
   }
 }
+
+.btn-link, a {
+  color: #553C8B !important;
+}
+
+a.selected {
+  color: #333333 !important;
+}
+
 .btn-link {
   text-decoration: underline;
   &:hover {
     text-decoration: underline;
   }
 }
+
+.bg-alert-brand {
+  background-color: $alert;
+}
+
+.bg-primary-dark {
+  background-color: $primaryDark;
+}
+
+.accordion-item {
+  border-left: 0;
+  border-right: 0;
+  border-color: $border-color;
+}
+
+.accordion-button, {
+  color: $primary;
+  background-color: $light;
+}
+
+.accordion-button:focus {
+  color: $primary;
+  background-color: $light;
+  outline: none;
+  box-shadow:none !important;
+}
+
+.accordion-button:not(.collapsed)::after, .accordion-button::after {
+  background-image: url('./assets/icon-dropdown.svg');
+}
+
+.accordion-item:last-of-type, .accordion-item:first-of-type  {
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.accordion-body {
+  background-color: $light;
+}
+
+.form-control {
+  border-radius: 0;
+}
+
+input[type="text"], input[type="email"], textarea, select {
+  outline: none;
+  box-shadow:none !important;
+  border:1px solid #553C8B !important;
+  background-color: #F6F7FA !important;
+  border-radius: 2px;
+  box-sizing: border-box;
+}
+
+// EDX
 
 #app {
   min-height: 100vh;

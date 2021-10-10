@@ -8,8 +8,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Route, Switch } from 'react-router-dom';
 
-import Header, { messages as headerMessages } from '@edx/frontend-component-header';
-import Footer, { messages as footerMessages } from '@edx/frontend-component-footer';
+//import Header, { messages as headerMessages } from '@edx/frontend-component-header';
+import Header from './header';
+//import Footer, { messages as footerMessages } from '@edx/frontend-component-footer';
+import Footer from './footer';
 
 import configureStore from './data/configureStore';
 import AccountSettingsPage, { NotFoundPage } from './account-settings';
@@ -35,7 +37,11 @@ subscribe(APP_READY, () => {
               <Route path="*" component={NotFoundPage} />
             </Switch>
           </main>
-          <Footer />
+          <Footer onLanguageSelected={(languageCode) => {/* set language */}}
+                  supportedLanguages={[
+                    { label: 'English', value: 'en'},
+                    { label: 'Russian', value: 'ru' },
+                  ]}/>
         </div>
       </Switch>
     </AppProvider>,
@@ -50,8 +56,8 @@ subscribe(APP_INIT_ERROR, (error) => {
 initialize({
   messages: [
     appMessages,
-    headerMessages,
-    footerMessages,
+    //headerMessages,
+    //footerMessages,
   ],
   requireAuthenticatedUser: true,
   hydrateAuthenticatedUser: true,

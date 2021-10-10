@@ -1,6 +1,21 @@
 import { defineMessages } from '@edx/frontend-platform/i18n';
 
 const messages = defineMessages({
+  'account.settings.page.breadcrumb.prev': {
+    id: 'account.settings.page.breadcrumb.prev',
+    defaultMessage: 'Dashboard',
+    description: 'The page heading for the account settings page.',
+  },
+  'account.settings.page.breadcrumb.current': {
+    id: 'account.settings.page.breadcrumb.current',
+    defaultMessage: 'Account Settings',
+    description: 'The page heading for the account settings page.',
+  },
+  'account.settings.page.accordition.title': {
+    id: 'account.settings.page.accordition.title',
+    defaultMessage: 'Quick Links',
+    description: 'The page heading for the account settings page.',
+  },
   'account.settings.page.heading': {
     id: 'account.settings.page.heading',
     defaultMessage: 'Account Settings',
@@ -90,6 +105,61 @@ const messages = defineMessages({
     id: 'account.settings.field.full.name.help.text',
     defaultMessage: 'The name that is used for ID verification and that appears on your certificates.',
     description: 'Help text for the account settings name field.',
+  },
+  'account.settings.field.name.verified': {
+    id: 'account.settings.field.name.verified',
+    defaultMessage: 'Verified name',
+    description: 'Label for account settings verified name field.',
+  },
+  'account.settings.field.name.verified.help.text.verified': {
+    id: 'account.settings.field.name.verified.help.text.verified',
+    defaultMessage: 'This name has been verified by government ID.',
+    description: 'Help text for the account settings verified name field when the name is verified.',
+  },
+  'account.settings.field.name.verified.help.text.submitted': {
+    id: 'account.settings.field.name.verified.help.text.submitted',
+    defaultMessage: 'Verification has been submitted. This usually takes 48 hours or less. Verified name cannot be changed at this time.',
+    description: 'Help text for the account settings verified name field when a verified name has been submitted.',
+  },
+  'account.settings.field.full.name.help.text.submitted': {
+    id: 'account.settings.field.full.name.help.text.submitted',
+    defaultMessage: 'When identity verification is successful, this name will appear on your certificates and public-facing records. Full name cannot be changed at this time.',
+    description: 'Help text for the account settings full name field when a verified name has been submitted.',
+  },
+  'account.settings.field.name.verified.success.message': {
+    id: 'account.settings.field.name.verified.success.message',
+    defaultMessage: 'Your identity verification request has successfully completed. You now have the option of selecting which name you prefer to appear on your certificates and public-records.',
+    description: 'The body of the success alert indicating that a user\'s name has been verified',
+  },
+  'account.settings.field.name.verified.success.message.header': {
+    id: 'account.settings.field.name.verified.success.message.header',
+    defaultMessage: 'Your name change request is complete!',
+    description: 'The header of the success alert indicating that a user\'s name has been verified',
+  },
+  'account.settings.field.name.verified.failure.message': {
+    id: 'account.settings.field.name.verified.failure.message',
+    defaultMessage: 'Your Verified name change attempt, “{verifiedName}”, did not pass ID verification. Your previous Verified name settings have been restored.',
+    description: 'The body of the failure alert indicating that a user\'s name was not able to be verified',
+  },
+  'account.settings.field.name.verified.failure.message.header': {
+    id: 'account.settings.field.name.verified.failure.message.header',
+    defaultMessage: 'We were not able to verify your identity.',
+    description: 'The header of the failure alert indicating that a user\'s name was not able to be verified',
+  },
+  'account.settings.field.name.verified.failure.message.help.link': {
+    id: 'account.settings.field.name.verified.failure.message.help.link',
+    defaultMessage: 'Learn more about ID verification',
+    description: 'The text of the button displayed when a user\'s name was not able to be verified, intended to direct the user to a help article about ID verification.',
+  },
+  'account.settings.field.name.verified.submitted.message': {
+    id: 'account.settings.field.name.verified.submitted.message',
+    defaultMessage: 'Your identity verification request has been submitted and usually takes between 24 and 48 hours to complete. When your request is approved, your updated name will appear on all associated certificates and public-facing records.',
+    description: 'The body of the submitted alert indicating that a user\'s name has been submitted for verification',
+  },
+  'account.settings.field.name.verified.submitted.message.header': {
+    id: 'account.settings.field.name.verified.submitted.message.header',
+    defaultMessage: 'Your name change request is almost complete!',
+    description: 'The header of the submitted alert indicating that a user\'s name has been submitted for verification',
   },
   'account.settings.field.email': {
     id: 'account.settings.field.email',
