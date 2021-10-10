@@ -36,6 +36,7 @@ import {
   postSetLang,
 } from '../site-language';
 import { saga as thirdPartyAuthSaga } from '../third-party-auth';
+import { saga as studentDocumentsSaga } from '../documents'
 
 // Services
 import { getSettings, patchSettings, getTimeZones } from './service';
@@ -149,5 +150,6 @@ export default function* saga() {
     siteLanguageSaga(),
     resetPasswordSaga(),
     thirdPartyAuthSaga(),
+    studentDocumentsSaga(),
   ]);
 }

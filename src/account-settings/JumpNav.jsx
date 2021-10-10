@@ -57,6 +57,11 @@ function JumpNav({ intl, displayDemographicsLink }) {
           </NavHashLink>
         </li>
         <li>
+          <NavHashLink to="#documents">
+            Документы
+          </NavHashLink>
+        </li>
+        <li>
           <NavHashLink to="#delete-account">
             {intl.formatMessage(messages['account.settings.jump.nav.delete.account'])}
           </NavHashLink>
