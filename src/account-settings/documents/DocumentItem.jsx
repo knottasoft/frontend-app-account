@@ -20,39 +20,34 @@ class DocumentItem extends React.Component {
 
     render () {
         const imageCounter = this.props.document.files.length < 2 ? null :
-            (<div style={ImageCounterStyle}>{this.props.document.files.length}</div>)
+            (<div className="position-absolute bottom-0 end-0 py-0 px-1 m-0" style={ImageCounterStyle}>{this.props.document.files.length}</div>)
 
         return (
-            <Card
-                className="mt-3 mr-3"
-                style={CardStyle}
-            >
-                <Card.Body>
-                    <Card.Text>
-                        <Image 
-                            style={ImageStyle}
-                            src={this.props.document?.files[0]?.thumbnail} 
-                            rounded
-                        />
-                        {imageCounter}
-                        <div
-                            style={LabelStyle}
-                        >
-                            {this.props.document.name}
+            <div className="card mb-3 bg-light" style={{maxWidth: 540}}>
+                <div className="d-flex no-gutters">
+                    <div className={window.innerWidth < 768 ? "p-2 align-self-center" : "p-2 align-self-top"}>
+                        <div className="position-relative">
+                            <img src={this.props.document?.files[0]?.thumbnail} className="border border-black" alt="..." style={ImageStyle} />
+                            {imageCounter}
                         </div>
-                        <div
-                            style={DateStyle}
-                        >Добавлено: {this.props.document.date_create.substring(0, 10)}</div>
-                        <Button 
-                            variant="link" 
-                            style={EditButtonStyle} 
-                            onClick={this.handleClick} 
+                    </div>
+                    <div className={window.innerWidth < 768 ? "p-2 align-self-center" : "p-2 align-self-top"}>
+                        <div className="p-0 card-body">
+                            <h6 style={{ fontSize: 14 }}>{this.props.document.name}</h6>
+                            <p style={{ fontSize: 14 }}>Добавлено: {this.props.document.date_create.substring(0, 10)}</p>
+                        </div>
+                    </div>
+                    <div className="align-self-end">
+                        <Button
+                            variant="link"
+                            style={EditButtonStyle}
+                            onClick={this.handleClick}
                         >
                             <FontAwesomeIcon className="mr-1" icon={faPencilAlt} />
                         </Button>
-                    </Card.Text>
-                </Card.Body>
-            </Card>
+                    </div>
+                </div>
+            </div>
         );
     }
 }
@@ -67,51 +62,31 @@ DocumentItem.defaultProps = {
 }
 
 export default connect ()(injectIntl(DocumentItem));
-const CardStyle = {
-    width: '320px',
-    height: '100px',
 
+const CardStyle = {
+    borderRadius: '4px',
     background: '#F6F7FA',
-    /* Border */
     border: '1px solid #EBEBEF',
-    box: {sizing: 'border-box'},
-    border: {radius: '4px'},
+    boxSizing: 'border-box',
+
 }
 
 const ImageStyle = {
-    //position: 'absolute',
     width: '60px',
     height: '60px',
-    left: '12px',
-    top: '12px',
-    
-    border: {radius: '4px'},
+    borderRadius: '4px',
+    objectFit: 'cover',
+    zIndex: 1
+
 }
 
 const LabelStyle = {
-    position: 'absolute',
-    width: '188px',
-    height: '17px',
-    left: '88px',
-    top: '12px',
-
     font: {
         family: 'Roboto',
         style: 'normal',
         weight: '500',
         size: '14px',
     },
-    line: {height: '124%'},
-    /* or 17px */
-
-    /* Typography/Black */
-    color: '#333333',
-
-    /* Inside Auto Layout */
-    flex: 'none',
-    order: '0',
-    flex: {grow: '0'},
-    margin: '4px 0px',
 }
 
 const DateStyle = {
@@ -127,36 +102,21 @@ const DateStyle = {
         size: '14px',
     },
     line: {height: '140%'},
-    /* or 17px */
-
-    /* Typography/Black */
     color: '#333333',
-
-
-    /* Inside Auto Layout */
     flex: 'none',
     order: '1',
-    flex: {grow: '0'},
+    flexGrow: 0
 }
 
 const EditButtonStyle = {
-    position: 'absolute',
     right: '0',
     bottom: '0',
     margin: '12px',
 }
 
 const ImageCounterStyle = {
-    position: 'absolute',
-    width: '24px',
-    height: '18px',
-    left: '56px',
-    top: '62px',
     background: '#553C8B',
-    "border-radius": '4px 0',
-    display: 'flex',
-    "flex-direction": 'column',
-    "justify-content": 'center',
-    "align-items": 'center',
+    borderRadius: '4px 0',
     color: 'white',
+    fontSize: '12px',
 }

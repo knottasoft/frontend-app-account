@@ -159,7 +159,6 @@ export class DeleteAccount extends React.Component {
                   </li>
               ) : null}
           </ul>
-
           <Desktop>
               <ul className="list-inline">
                   <li className="list-inline-item pe-4">

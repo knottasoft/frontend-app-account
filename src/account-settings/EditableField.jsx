@@ -63,9 +63,9 @@ function EditableField(props) {
 
   const renderEmptyLabel = () => {
     if (isEditable) {
-      return <Button variant="link" onClick={handleEdit} className="p-0">{emptyLabel}</Button>;
+      return <Button variant="link" onClick={handleEdit} className="p-0 text-wrap">{emptyLabel}</Button>;
     }
-    return <span className="text-muted">{emptyLabel}</span>;
+    return <span className="text-muted text-wrap">{emptyLabel}</span>;
   };
 
   const renderValue = (rawValue) => {
@@ -162,10 +162,10 @@ function EditableField(props) {
             <div className="d-flex align-items-start">
               <h6 className="mb-2" aria-level="3">{label}</h6>
             </div>
-            <Button variant="link" disabled={!isEditable} onClick={handleEdit}>
-              {renderValue(value)}
-            </Button>
-            <p className="small text-muted mt-2">{renderConfirmationMessage() || helpText}</p>
+            <button className={"btn btn-link"} disabled={!isEditable} onClick={handleEdit}>
+              <span className={"text-break"}>{renderValue(value)}</span>
+            </button>
+            <p className="small text-muted mt-2 text-wrap">{renderConfirmationMessage() || helpText}</p>
           </div>
         ),
       }}

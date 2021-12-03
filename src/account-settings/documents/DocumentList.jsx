@@ -15,6 +15,10 @@ import {
     deleteStudentDocument,
   } from './data/actions';
 import DocumentCard from './DocumentCard';
+import DocumentCardMobile from "./mobile/DocumentCardMobile";
+import Responsive from "react-responsive";
+import MobileAccountSettingsPage from "../MobileAccountSettingsPage";
+import DesktopAccountSettingsPage from "../DesktopAccountSettingsPage";
 
 class DocumentList extends React.Component {
     constructor(props) {
@@ -49,12 +53,34 @@ class DocumentList extends React.Component {
     }
 
     getDocuments(documents) {
-        return documents.map((doc) => 
-            <DocumentItem 
-                key={doc.id}
-                document={doc} 
-                onClick={this.handleEditButton}
-            />);
+
+        let count = 3
+
+        if (window.innerWidth >= 1700 ) {
+            count = 4
+        } else if (window.innerWidth < 1600 && window.innerWidth > 768 ) {
+            count = 3
+        } else if (window.innerWidth < 768) {
+            count = 1
+        }
+
+        const rows = documents.reduce(function (rows, key, index) {
+            return (index % count === 0 ? rows.push([key])
+                : rows[rows.length-1].push(key)) && rows;
+        }, []);
+
+        return rows.map(row => (
+            <div className="row">
+                <div className={count === 1 ? "" : "hstack gap-5"} >
+                    { row.map(doc => (<DocumentItem
+                        key={doc.id}
+                        document={doc}
+                        onClick={this.handleEditButton}
+                    />)) }
+                </div>
+
+            </div>
+        ));
     };
 
     render() {
@@ -63,31 +89,44 @@ class DocumentList extends React.Component {
 
         return (
             <div>
-                <h4>Документы (component)</h4>
-                <div
-                    className="m-3 row"
-                >
-                    { docs }
-                </div>
+                { docs }
                 <Button
                     onClick={this.props.studentDocumentCardAdd}
                 >
                     Добавить документ
                 </Button>
 
-                { (isOpen) ? 
-                    <DocumentCard
-                        isNew={this.props.card.isNew}
-                        id={this.props.card?.id}
-                        title={this.props.card?.title}
-                        type={this.props.card?.type}
-                        files={this.props.card?.files}
-                        docTypes={this.props.docTypes}
-                        onClose={this.props.studentDocumentCardClose}
-                        onCreate={this.handleCreate}
-                        onDelete={this.handleDelete}
-                        onUpdate={this.handleUpdate}
-                    />
+                { (isOpen) ?
+                    <>
+                        <Responsive maxWidth={768}>
+                            <DocumentCardMobile
+                                isNew={this.props.card.isNew}
+                                id={this.props.card?.id}
+                                title={this.props.card?.title}
+                                type={this.props.card?.type}
+                                files={this.props.card?.files}
+                                docTypes={this.props.docTypes}
+                                onClose={this.props.studentDocumentCardClose}
+                                onCreate={this.handleCreate}
+                                onDelete={this.handleDelete}
+                                onUpdate={this.handleUpdate}
+                            />
+                        </Responsive>
+                        <Responsive minWidth={769}>
+                            <DocumentCard
+                                isNew={this.props.card.isNew}
+                                id={this.props.card?.id}
+                                title={this.props.card?.title}
+                                type={this.props.card?.type}
+                                files={this.props.card?.files}
+                                docTypes={this.props.docTypes}
+                                onClose={this.props.studentDocumentCardClose}
+                                onCreate={this.handleCreate}
+                                onDelete={this.handleDelete}
+                                onUpdate={this.handleUpdate}
+                            />
+                        </Responsive>
+                    </>
                 : null
                 }
             </div>
@@ -131,8 +170,3 @@ export default connect(
         deleteStudentDocument,
     },
 )(injectIntl(DocumentList));
-
-const DocumentListStyle = {
-    magin: '24px 0 24 px 0',
-}
-

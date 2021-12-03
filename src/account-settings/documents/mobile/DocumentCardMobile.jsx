@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import FileList from './FileList';
+import FileList from '../FileList';
 import {Modal, CloseButton, Button, Form, FormControl} from "react-bootstrap";
 import { useMediaQuery } from 'react-responsive'
 
@@ -161,33 +161,32 @@ export class DocumentCard extends Component {
                         isMobile={isMobile}
                     />
                 </Modal.Body>
-                <div className="px-0 pb-4">
-                    <div className={"d-flex flex-row justify-content-start"}>
-                        <div className="px-3">
-                            <button className="btn btn-primary px-4 py-2"
-                                    style={{ fontSize: 16, lineHeight: '124%' }}
-                                    onClick={this.handleSave}
-                            >Сохранить документ
-                            </button>
-                        </div>
-                        <div className="">
-                            <button className="btn btn-outline-primary px-4 py-2"
-                                    style={{ fontSize: 16, lineHeight: '124%' }}
-                                    onClick={this.props.onClose}
-                            >Отменить
-                            </button>
-                        </div>
-                        {this.props.isNew ? null
-                            :  <div className="px-3 flex-grow-1 d-flex justify-content-end">
-                                <button className="btn btn-outline-danger px-4 py-2"
-                                        style={{ fontSize: 16, lineHeight: '124%' }}
-                                        onClick={this.handleDelete}
-                                >Удалить
-                                </button>
-                        </div>}
-                    </div>
+                <div className={"row-cols-1 px-3 mb-3"}>
+                    <button className="btn btn-primary"
+                            style={{ fontSize: 16, lineHeight: '124%' }}
+                            onClick={this.handleSave}
+                    >Сохранить документ
+                    </button>
                 </div>
-
+                <div className={this.props.isNew ? "row-cols-1 px-3 pb-3" : "row-cols-1 px-3"}>
+                    <button className="btn btn-outline-primary"
+                            style={{ fontSize: 16, lineHeight: '124%' }}
+                            onClick={this.props.onClose}
+                    >Отменить
+                    </button>
+                </div>
+                {this.props.isNew ? null
+                    : <>
+                        <hr className={"col-12"}></hr>
+                        <div className={"row-cols-1 px-3 mb-3"}>
+                            <button className="btn btn-danger"
+                                    style={{ fontSize: 16, lineHeight: '124%' }}
+                                    onClick={this.handleDelete}
+                            >Удалить
+                            </button>
+                        </div>
+                    </>
+                }
             </Modal>
         );
     };

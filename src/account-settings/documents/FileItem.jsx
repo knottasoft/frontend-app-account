@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Card, Image, Icon } from '@edx/paragon';
+import { Button, Card, Image } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 
@@ -12,30 +12,21 @@ class FileItem extends React.Component {
     }
 
     render () {
-        const imageSrc = this.props.file.isNewFile ? 
-            this.props.file.uploadedFileUri : 
+        const imageSrc = this.props.file.isNewFile ?
+            this.props.file.uploadedFileUri :
             this.props.file.thumbnail
 
         return (
-            <Card 
-                className="m-3"
-            >
-                <Card.Body style={CardBodyStyle}>                
-                    <div>
-                        <Image src={imageSrc} rounded style={FileItemImageStyle}/>                       
-                        <Button 
-                            variant="link" 
-                            style={ButtonStyle} 
-                            onClick={_ => {this.props.onDelete(this.props.file)}} 
-                        >
-                            <FontAwesomeIcon 
-                                className="mr-1" 
-                                icon={faTimesCircle} 
-                                style={IconStyle}/>
-                        </Button>
-                    </div>
-                </Card.Body>
-            </Card>
+            <div className={"ms-3 my-3 position-relative"}>
+                <img src={imageSrc} style={FileItemImageStyle} className={"border border-black"}/>
+                <span className={"position-absolute top-0 start-100 translate-middle rounded-circle"}>
+                    <FontAwesomeIcon
+                        onClick={_ => {this.props.onDelete(this.props.file)}}
+                        icon={faTimesCircle}
+                        style={IconStyle}
+                    />
+                </span>
+            </div>
         );
     }
 }
@@ -43,6 +34,7 @@ class FileItem extends React.Component {
 FileItem.propTypes = {
     file: PropTypes.object,
     onDelete: PropTypes.func.isRequired,
+    index: PropTypes.number
 };
 
 FileItem.defaultProps = {
@@ -56,19 +48,22 @@ const CardBodyStyle = {
 }
 
 const FileItemImageStyle = {
-    'width': '80px',
-    'height': '80px',
+    width: '60px',
+    height: '60px',
+    borderRadius: '4px',
+    objectFit: 'cover',
+    zIndex: 1,
 };
 
-const ButtonStyle = {
-    position: "absolute",
-    right: "-12px",
-    top: "-12px",
-    padding: "0",
-}
+// const ButtonStyle = {
+//     position: "absolute",
+//     right: "-12px",
+//     top: "-12px",
+//     padding: "0",
+// }
 
 const IconStyle = {
     background: "white",
     color: "#D01F28",
-    "border-radius": "8px",
+    borderRadius: "8px"
 }

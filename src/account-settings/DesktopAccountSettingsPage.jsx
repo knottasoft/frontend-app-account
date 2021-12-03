@@ -44,6 +44,8 @@ import {
 import { fetchSiteLanguages } from './site-language';
 import CoachingToggle from './coaching/CoachingToggle';
 import DemographicsSection from './demographics/DemographicsSection';
+import DocumentList from "./documents/DocumentList";
+import {getStudentDocuments, getStudentDocumentTypes} from "./documents/data/actions";
 
 class DesktopAccountSettingsPage extends React.Component {
   constructor(props, context) {
@@ -75,6 +77,8 @@ class DesktopAccountSettingsPage extends React.Component {
   componentDidMount() {
     this.props.fetchSettings();
     this.props.fetchSiteLanguages();
+    this.props.getStudentDocuments();
+    this.props.getStudentDocumentTypes();
     sendTrackingLogEvent('edx.user.settings.viewed', {
       page: 'account',
       visibility: null,
@@ -707,6 +711,16 @@ class DesktopAccountSettingsPage extends React.Component {
           <ThirdPartyAuth />
         </div>
         <hr className="mt-2 mb-3"/>
+
+        <div className="account-section" id="documents" ref={this.navLinkRefs['#documents']}>
+          <div className="mb-4">
+            <h2 className="section-heading">
+              <span className="pe-1">📄</span>{this.props.intl.formatMessage(messages['account.settings.section.documents'])}
+            </h2>
+          </div>
+          <DocumentList/>
+        </div>
+        <hr className="mt-2 mb-3"/>
         <div className="account-section" id="delete-account" ref={this.navLinkRefs['#delete-account']}>
           <DeleteAccount
             isVerifiedAccount={this.props.isActive}
@@ -875,4 +889,6 @@ export default connect(accountSettingsPageSelector, {
   saveSettings,
   updateDraft,
   fetchSiteLanguages,
+  getStudentDocuments,
+  getStudentDocumentTypes,
 })(injectIntl(DesktopAccountSettingsPage));

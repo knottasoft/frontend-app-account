@@ -2,7 +2,7 @@ import axios from "axios";
 import TokenService from "./token";
 
 const instance = axios.create({
-  baseURL: "http://api.local.knotta.ru:8010/api/v1",
+  baseURL: process.env.COPP_API_URL,
   headers: {
     //"Content-Type": "application/json",
   },
@@ -10,9 +10,9 @@ const instance = axios.create({
 
 instance.interceptors.request.use(
   config => {
-    console.log('COOP API AUTH - request')
+    console.log('COPP API AUTH - request')
     const token = TokenService.getLocalAccessToken();
-    console.log('COOP API AUTH - request at', token);
+    console.log('COPP API AUTH - request at', token);
     if (token) {
       config.headers["Authorization"] = 'Bearer ' + token;  // for Spring Boot back-end
       //config.headers["x-access-token"] = token; // for Node.js Express back-end
@@ -20,7 +20,7 @@ instance.interceptors.request.use(
     return config;
   },
   error => {
-    console.log('COOP API AUTH - request error', error);
+    console.log('COPP API AUTH - request error', error);
     return Promise.reject(error);
   }
 );
