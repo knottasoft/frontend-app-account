@@ -41,6 +41,7 @@
   "account.settings.section.site.preferences": "Параметры сайта",
   "account.settings.section.linked.accounts": "Связанные аккаунты",
   "account.settings.section.linked.accounts.description": "Чтобы упростить вход на {siteName}, вы можете привязать свои личные аккаунты.",
+  "account.settings.section.documents": "Документы",
   "account.settings.field.username": "Имя пользователя",
   "account.settings.field.username.help.text": "Имя, которое идентифицирует вас на {siteName}. Вы не можете изменить свое имя пользователя.",
   "account.settings.field.full.name": "Полное имя",

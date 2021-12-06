@@ -49,6 +49,11 @@ function AccordionNav({ intl, displayDemographicsLink }) {
                             </NavHashLink>
                         </li>
                         <li className="py-2">
+                            <NavHashLink to="#documents" className="text-decoration-none">
+                                {intl.formatMessage(messages['account.settings.section.documents'])}
+                            </NavHashLink>
+                        </li>
+                        <li className="py-2">
                             <NavHashLink to="#delete-account" className="text-decoration-none">
                                 {intl.formatMessage(messages['account.settings.jump.nav.delete.account'])}
                             </NavHashLink>

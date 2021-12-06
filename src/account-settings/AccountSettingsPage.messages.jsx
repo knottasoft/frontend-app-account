@@ -81,6 +81,11 @@ const messages = defineMessages({
     defaultMessage: 'You can link your identity accounts to simplify signing in to {siteName}.',
     description: 'The linked accounts section heading description.',
   },
+  'account.settings.section.documents': {
+    id: 'account.settings.section.documents',
+    defaultMessage: 'Documents',
+    description: 'The Documents section heading.',
+  },
   'account.settings.field.username': {
     id: 'account.settings.field.username',
     defaultMessage: 'Username',

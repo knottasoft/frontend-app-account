@@ -9,11 +9,21 @@ import {
   RESET_DRAFTS,
   SAVE_MULTIPLE_SETTINGS,
 } from './actions';
+import { 
+  CREATE_STUDENT_DOCUMENT, 
+  STUDENT_DOCUMENT_CARD_ADD, 
+  STUDENT_DOCUMENT_CARD_CLOSE,
+  STUDENT_DOCUMENT_CARD_EDIT,
+  UPDATE_STUDENT_DOCUMENT,
+  DELETE_STUDENT_DOCUMENT,
+  GET_STUDENT_DOCUMENT_TYPES,
+} from '../documents/data/actions';
 
 import { reducer as deleteAccountReducer, DELETE_ACCOUNT } from '../delete-account';
 import { reducer as siteLanguageReducer, FETCH_SITE_LANGUAGES } from '../site-language';
 import { reducer as resetPasswordReducer, RESET_PASSWORD } from '../reset-password';
 import { reducer as thirdPartyAuthReducer, DISCONNECT_AUTH } from '../third-party-auth';
+import { reducer as studentDocumentsReducer, GET_STUDENT_DOCUMENTS} from '../documents';
 
 export const defaultState = {
   loading: false,
@@ -32,6 +42,7 @@ export const defaultState = {
   siteLanguage: siteLanguageReducer(),
   resetPassword: resetPasswordReducer(),
   thirdPartyAuth: thirdPartyAuthReducer(),
+  studentDocuments: studentDocumentsReducer(),
 };
 
 const reducer = (state = defaultState, action) => {
@@ -179,6 +190,30 @@ const reducer = (state = defaultState, action) => {
       return {
         ...state,
         deleteAccount: deleteAccountReducer(state.deleteAccount, action),
+      };
+
+    case GET_STUDENT_DOCUMENTS.BEGIN:
+    case GET_STUDENT_DOCUMENTS.SUCCESS:
+    case GET_STUDENT_DOCUMENTS.FAILURE:
+    case GET_STUDENT_DOCUMENTS.RESET:
+    case STUDENT_DOCUMENT_CARD_ADD:
+    case STUDENT_DOCUMENT_CARD_CLOSE:
+    case STUDENT_DOCUMENT_CARD_EDIT:
+    case CREATE_STUDENT_DOCUMENT.BEGIN:
+    case CREATE_STUDENT_DOCUMENT.SUCCESS:
+    case CREATE_STUDENT_DOCUMENT.FAILURE:
+    case CREATE_STUDENT_DOCUMENT.RESET:
+    case UPDATE_STUDENT_DOCUMENT.BEGIN:
+    case UPDATE_STUDENT_DOCUMENT.SUCCESS:
+    case UPDATE_STUDENT_DOCUMENT.FAILURE:
+    case DELETE_STUDENT_DOCUMENT.BEGIN:
+    case DELETE_STUDENT_DOCUMENT.SUCCESS:
+    case DELETE_STUDENT_DOCUMENT.FAILURE:
+    case GET_STUDENT_DOCUMENT_TYPES.SUCCESS:
+    case GET_STUDENT_DOCUMENT_TYPES.FAILURE:
+      return {
+        ...state,
+        studentDocuments: studentDocumentsReducer(state.studentDocuments, action),
       };
 
     case FETCH_SITE_LANGUAGES.BEGIN:

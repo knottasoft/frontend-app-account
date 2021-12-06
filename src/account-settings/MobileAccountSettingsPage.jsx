@@ -44,6 +44,8 @@ import {
 import { fetchSiteLanguages } from './site-language';
 import CoachingToggle from './coaching/CoachingToggle';
 import DemographicsSection from './demographics/DemographicsSection';
+import DocumentList from "./documents/DocumentList";
+import {getStudentDocuments, getStudentDocumentTypes} from "./documents/data/actions";
 
 class MobileAccountSettingsPage extends React.Component {
   constructor(props, context) {
@@ -68,6 +70,7 @@ class MobileAccountSettingsPage extends React.Component {
       '#social-media': React.createRef(),
       '#site-preferences': React.createRef(),
       '#linked-accounts': React.createRef(),
+      '#documents': React.createRef(),
       '#delete-account': React.createRef(),
     };
   }
@@ -75,6 +78,8 @@ class MobileAccountSettingsPage extends React.Component {
   componentDidMount() {
     this.props.fetchSettings();
     this.props.fetchSiteLanguages();
+    this.props.getStudentDocuments();
+    this.props.getStudentDocumentTypes();
     sendTrackingLogEvent('edx.user.settings.viewed', {
       page: 'account',
       visibility: null,
@@ -405,7 +410,7 @@ class MobileAccountSettingsPage extends React.Component {
 
           <div className="mb-4">
             <h2 className="section-heading">
-              <span className="pe-1">🤖</span> {this.props.intl.formatMessage(messages['account.settings.section.account.information'])}
+              <span className="pe-1">🤖</span>{this.props.intl.formatMessage(messages['account.settings.section.account.information'])}
             </h2>
             <p className="text-secondary">{this.props.intl.formatMessage(messages['account.settings.section.account.information.description'])}</p>
           </div>
@@ -602,7 +607,7 @@ class MobileAccountSettingsPage extends React.Component {
             <h2 className="section-heading">
               <span className="pe-1">📱</span>{this.props.intl.formatMessage(messages['account.settings.section.social.media'])}
             </h2>
-            <p className="text-secondary">
+            <p className="text-secondary text-break">
               {this.props.intl.formatMessage(
                   messages['account.settings.section.social.media.description'],
                   { siteName: getConfig().SITE_NAME },
@@ -690,6 +695,23 @@ class MobileAccountSettingsPage extends React.Component {
             </p>
           </div>
           <ThirdPartyAuth />
+        </div>
+        <hr className="mt-2 mb-3"/>
+        <div className="col-12 mb-4 pe-4">
+          <div className="account-section" id="documents" ref={this.navLinkRefs['#documents']}>
+            <div className="mb-4">
+              <h2 className="section-heading">
+                <span className="pe-1">📄</span>{this.props.intl.formatMessage(messages['account.settings.section.documents'])}
+              </h2>
+              <p className="text-secondary">
+                {this.props.intl.formatMessage(
+                    messages['account.settings.section.linked.accounts.description'],
+                    { siteName: getConfig().SITE_NAME },
+                )}
+              </p>
+            </div>
+            <DocumentList/>
+          </div>
         </div>
         <hr className="mt-2 mb-3"/>
         <div className="account-section" id="delete-account" ref={this.navLinkRefs['#delete-account']}>
@@ -854,4 +876,6 @@ export default connect(accountSettingsPageSelector, {
   saveSettings,
   updateDraft,
   fetchSiteLanguages,
+  getStudentDocuments,
+  getStudentDocumentTypes,
 })(injectIntl(MobileAccountSettingsPage));
