@@ -2,7 +2,7 @@ import axios from "axios";
 import TokenService from "./token";
 
 const instance = axios.create({
-  baseURL: process.env.COPP_API_URL,
+  baseURL: process.env.COPP_API_BASE_URL,
   headers: {
     //"Content-Type": "application/json",
   },
