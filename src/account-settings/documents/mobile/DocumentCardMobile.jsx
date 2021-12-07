@@ -41,6 +41,7 @@ export class DocumentCard extends Component {
     }
 
     handleDelFile(e) {
+        console.log(e)
         if (e.isNewFile) {
             this.setState(prevState => ({
                 files: prevState.files.filter(el =>

@@ -23,18 +23,18 @@ class DocumentItem extends React.Component {
             (<div className="position-absolute bottom-0 end-0 py-0 px-1 m-0" style={ImageCounterStyle}>{this.props.document.files.length}</div>)
 
         return (
-            <div className="card mb-3 bg-light" style={{maxWidth: 540}}>
+            <div className="card mb-3 bg-light me-4">
                 <div className="d-flex no-gutters">
-                    <div className={window.innerWidth < 768 ? "p-2 align-self-center" : "p-2 align-self-top"}>
+                    <div className="p-2 align-self-center">
                         <div className="position-relative">
                             <img src={this.props.document?.files[0]?.thumbnail} className="border border-black" alt="..." style={ImageStyle} />
                             {imageCounter}
                         </div>
                     </div>
-                    <div className={window.innerWidth < 768 ? "p-2 align-self-center" : "p-2 align-self-top"}>
+                    <div className="ps-0 py-2 d-flex align-self-center">
                         <div className="p-0 card-body">
-                            <h6 style={{ fontSize: 14 }}>{this.props.document.name}</h6>
-                            <p style={{ fontSize: 14 }}>Добавлено: {this.props.document.date_create.substring(0, 10)}</p>
+                            <h6 style={{ fontSize: 16 }}>{this.props.document.name}</h6>
+                            <p style={{ fontSize: 12 }}>Добавлено: {this.props.document.date_create.substring(0, 10)}</p>
                         </div>
                     </div>
                     <div className="align-self-end">
