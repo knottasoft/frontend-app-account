@@ -53,35 +53,47 @@ class DocumentList extends React.Component {
     }
 
     getDocuments(documents) {
-
-        let count = 3
-
-        if (window.innerWidth >= 1700 ) {
-            count = 4
-        } else if (window.innerWidth < 1600 && window.innerWidth > 768 ) {
-            count = 3
-        } else if (window.innerWidth < 768) {
-            count = 1
-        }
-
-        const rows = documents.reduce(function (rows, key, index) {
-            return (index % count === 0 ? rows.push([key])
-                : rows[rows.length-1].push(key)) && rows;
-        }, []);
-
-        return rows.map(row => (
-            <div className="row">
-                <div className={count === 1 ? "" : "hstack gap-5"} >
-                    { row.map(doc => (<DocumentItem
-                        key={doc.id}
-                        document={doc}
-                        onClick={this.handleEditButton}
-                    />)) }
-                </div>
-
-            </div>
-        ));
+        return documents.map((doc) =>
+            <DocumentItem
+                key={doc.id}
+                document={doc}
+                onClick={this.handleEditButton}
+            />);
     };
+
+    // getDocuments(documents) {
+
+
+        // let count = 3
+        //
+        // if (window.innerWidth >= 1700 ) {
+        //     count = 4
+        // } else if (window.innerWidth < 1600 && window.innerWidth > 768 ) {
+        //     count = 3
+        // } else if (window.innerWidth < 768) {
+        //     count = 1
+        // }
+        //
+        // const rows = documents.reduce(function (rows, key, index) {
+        //     return (index % count === 0 ? rows.push([key])
+        //         : rows[rows.length-1].push(key)) && rows;
+        // }, []);
+
+
+
+        // return rows.map(row => (
+        //     <div className="row">
+        //         <div className={count === 1 ? "" : "hstack gap-5"} >
+        //             { row.map(doc => (<DocumentItem
+        //                 key={doc.id}
+        //                 document={doc}
+        //                 onClick={this.handleEditButton}
+        //             />)) }
+        //         </div>
+        //
+        //     </div>
+        // ));
+    // };
 
     render() {
         const docs = this.getDocuments(this.props.documents);
@@ -89,12 +101,16 @@ class DocumentList extends React.Component {
 
         return (
             <div>
-                { docs }
+                <div className="d-flex flex-wrap">
+                    { docs }
+                </div>
                 <Button
+                    className="mt-2"
                     onClick={this.props.studentDocumentCardAdd}
                 >
                     Добавить документ
                 </Button>
+
 
                 { (isOpen) ?
                     <>

@@ -48,7 +48,6 @@ function JumpNav({ intl, displayDemographicsLink }) {
             {intl.formatMessage(messages['account.settings.section.linked.accounts'])}
           </NavHashLink>
         </li>
-        // TODO: Перевод
         <li className="py-2">
           <NavHashLink to="#documents" className="text-decoration-none">
             Документы

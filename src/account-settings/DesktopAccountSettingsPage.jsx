@@ -70,6 +70,7 @@ class DesktopAccountSettingsPage extends React.Component {
       '#social-media': React.createRef(),
       '#site-preferences': React.createRef(),
       '#linked-accounts': React.createRef(),
+      '#documents': React.createRef(),
       '#delete-account': React.createRef(),
     };
   }
