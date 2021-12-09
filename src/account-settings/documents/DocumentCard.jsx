@@ -16,6 +16,9 @@ export class DocumentCard extends Component {
         this.handleAddFile = this.handleAddFile.bind(this);
         this.handleDelFile = this.handleDelFile.bind(this);
         this.getDocTitleOrDefault = this.getDocTitleOrDefault.bind(this);
+        this.getDocumentStatus = this.getDocumentStatus.bind(this);
+        this.getDocumentExpired = this.getDocumentExpired.bind(this);
+        this.getValidationError= this.getValidationError.bind(this);
 
         this.state = {
             title: this.props.title,
@@ -99,6 +102,18 @@ export class DocumentCard extends Component {
         }
     }
 
+    handleDelete() {
+        console.log('handleDelete', this.props.id)
+        
+        if (this.props.isNew) {
+            this.props.onClose();
+        }
+        else {
+            this.props.onDelete(this.props.id);
+        }
+        
+    }
+    
     getDocTitleOrDefault()
     {
         if (this.state.title) {
@@ -109,21 +124,64 @@ export class DocumentCard extends Component {
         return selectedDocType.label
     }
 
-    handleDelete() {
-        console.log('handleDelete', this.props.id)
-
+    getDocumentStatus() {
         if (this.props.isNew) {
-            this.props.onClose();
+            return null
         }
-        else {
-            this.props.onDelete(this.props.id);
+        
+        let status = "На проверке"
+
+        if (this.props.status == 'r') {
+            status = "Проверка не пройдена"
         }
 
+        if (this.props.status == 'v') {
+            status = "Подтвержден"
+
+            if (new Date(this.props.expiry_date) < Date.now()){
+                status = "Истек срок действия документа"
+            }
+        }
+
+        return (
+            <div className="form-row px-3 mt-4">
+                <label htmlFor="doc-status-id" className="mb-1">
+                    <strong style={{ fontSize: 16 }}>Состояние: </strong> {status}
+                </label>
+            </div>
+        )
+    }
+
+    getDocumentExpired() {
+        if (this.props.status == 'v'){ // v-проверка пройдена
+            return (
+                <div className="form-row px-3 mt-4">
+                    <label htmlFor="doc-expired-id" className="mb-1">
+                        <strong style={{ fontSize: 16 }}>Действителен до:</strong> {this.props.expiry_date}
+                    </label>
+                </div>
+            )
+        }
+    }
+
+    getValidationError() {
+        if (this.props.status == 'r'){ // r- возвращен, проверка не пройдена
+            return (
+                <div className="form-row px-3 mt-4">
+                    <label htmlFor="doc-expired-id" className="mb-1">
+                        <strong style={{ fontSize: 16 }}>Причина:</strong> {this.props.validation_error}
+                    </label>
+                </div>
+            )
+        }
     }
 
     render() {
         const docType = this.props.docTypes.find(el => el.value === this.state.type)
         const isMobile = window.innerWidth < 768
+        const docStatus = this.getDocumentStatus()
+        const docExpired = this.getDocumentExpired()
+        const docValidationError = this.getValidationError()
 
         return (
             <Modal
@@ -165,6 +223,9 @@ export class DocumentCard extends Component {
                         />
                         <Form.Text muted style={{ fontSize: 14 }}>Необязательное поле</Form.Text>
                     </div>
+                    {docStatus}
+                    {docExpired}
+                    {docValidationError}
                     <FileList
                         isNew={this.props.isNew}
                         description={docType?.description}
@@ -214,6 +275,9 @@ DocumentCard.propTypes = {
     type: PropTypes.string,
     files: PropTypes.arrayOf(PropTypes.object),
     docTypes: PropTypes.arrayOf(PropTypes.object),
+    status: PropTypes.string,
+    expiry_date: PropTypes.string,
+    validation_error: PropTypes.string,
     onClose: PropTypes.func.isRequired,
     onUpdate: PropTypes.func.isRequired,
     onCreate: PropTypes.func.isRequired,
@@ -227,6 +291,7 @@ DocumentCard.defaultProps = {
     type: null,
     files: [],
     docTypes: [],
+    status: 'n',
 };
 
 export default DocumentCard;
