@@ -15,6 +15,7 @@ export class DocumentCard extends Component {
         this.handleDelete = this.handleDelete.bind(this);
         this.handleAddFile = this.handleAddFile.bind(this);
         this.handleDelFile = this.handleDelFile.bind(this);
+        this.getDocTitleOrDefault = this.getDocTitleOrDefault.bind(this);
 
         this.state = {
             title: this.props.title,
@@ -61,9 +62,11 @@ export class DocumentCard extends Component {
     }
 
     handleSave() {
+        const title = this.getDocTitleOrDefault()
+
         if (this.props.isNew) {
             const doc = {
-                title: this.state.title,
+                title: title,
                 type: this.state.type,
                 files: this.state.files.map((f) => f.uploadedFile)
             }
@@ -86,7 +89,7 @@ export class DocumentCard extends Component {
 
             const updateInfo = {
                 id: this.props.id,
-                title: this.state.title,
+                title: title,
                 type: this.state.type,
                 files: filesToCreate,
                 filesIdToDelete: idToDelete,
@@ -94,6 +97,16 @@ export class DocumentCard extends Component {
 
             this.props.onUpdate(updateInfo);
         }
+    }
+
+    getDocTitleOrDefault()
+    {
+        if (this.state.title) {
+            return this.state.title;
+        }
+
+        const selectedDocType = this.props.docTypes.find(x => x.value == this.state.type)
+        return selectedDocType.label
     }
 
     handleDelete() {
