@@ -33,6 +33,7 @@ export async function updateStudentDocument(updateInfo) {
     formData.append('name', updateInfo.title)
     formData.append('description', updateInfo.type)
     formData.append('student_id', updateInfo.student_id)
+    formData.append('status', 'n')
 
     const { data } = await api
         .put(`/docs/${updateInfo.id}/`, formData)
