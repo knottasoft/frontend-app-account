@@ -10,7 +10,7 @@ const instance = axios.create({
 
 instance.interceptors.request.use(
   config => {
-    console.log('COPP API AUTH - request')
+    console.log('COPP API AUTH - request', process.env.COPP_API_BASE_URL )
     const token = TokenService.getLocalAccessToken();
     console.log('COPP API AUTH - request at', token);
     if (token) {
@@ -33,7 +33,7 @@ instance.interceptors.response.use((response) => {
 
     if (err.response) {
       // Access Token was expired
-      if (err.response.status === 403 && !originalConfig._retry) {
+      if ((err.response.status === 401 || err.response.status === 403) && !originalConfig._retry) {
         originalConfig._retry = true;
 
         try {

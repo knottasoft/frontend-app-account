@@ -98,6 +98,9 @@ const reducer = (state = defaultState, action = null) => {
                         title: action.payload.document.name,
                         files: action.payload.document.files,
                         id: action.payload.document.id,
+                        status: action.payload.document.status,
+                        expiry_date: action.payload.document.expiry_date,
+                        validation_error: action.payload.document.validation_error
                     }
                 }
             

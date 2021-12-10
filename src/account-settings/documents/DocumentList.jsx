@@ -122,6 +122,9 @@ class DocumentList extends React.Component {
                                 type={this.props.card?.type}
                                 files={this.props.card?.files}
                                 docTypes={this.props.docTypes}
+                                status={this.props.card?.status}
+                                expiry_date={this.props.card?.expiry_date}
+                                validation_error={this.props.card?.validation_error}
                                 onClose={this.props.studentDocumentCardClose}
                                 onCreate={this.handleCreate}
                                 onDelete={this.handleDelete}
@@ -136,6 +139,9 @@ class DocumentList extends React.Component {
                                 type={this.props.card?.type}
                                 files={this.props.card?.files}
                                 docTypes={this.props.docTypes}
+                                status={this.props.card?.status}
+                                expiry_date={this.props.card?.expiry_date}
+                                validation_error={this.props.card?.validation_error}
                                 onClose={this.props.studentDocumentCardClose}
                                 onCreate={this.handleCreate}
                                 onDelete={this.handleDelete}

@@ -4,7 +4,7 @@ import { injectIntl, intlShape } from '@edx/frontend-platform/i18n';
 import { connect } from 'react-redux';
 import { Button, Card, Image, Icon } from '@edx/paragon';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faExclamationTriangle, faPencilAlt } from '@fortawesome/free-solid-svg-icons';
+import { faClock, faCheckCircle, faExclamationCircle, faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 
 class DocumentItem extends React.Component {
     constructor(props) {
@@ -18,9 +18,59 @@ class DocumentItem extends React.Component {
         this.props.onClick(this.props.document);
     }
 
+    getStatusIcon() {
+        if (this.props.document.status == "n"){
+            return ( 
+                <div 
+                    className="align-self-start" 
+                    style={StatusIconValidStyle}
+                    title="На проверке"
+                >
+                    <FontAwesomeIcon className="mr-1" icon={faClock} />
+                </div>
+            )
+        }
+        if (this.props.document.status == "r") {
+            return ( 
+                <div 
+                className="align-self-start" 
+                style={StatusIconInvalidStyle}
+                title="Не действительный"
+                >
+                    <FontAwesomeIcon className="mr-1" icon={faExclamationCircle} />
+                </div>
+            )
+        }
+
+        const isExpired = new Date(this.props.document.expiry_date) < Date.now()
+        if (isExpired) {
+            return ( 
+                <div 
+                className="align-self-start" 
+                style={StatusIconInvalidStyle}
+                title="Просрочен"
+                >
+                    <FontAwesomeIcon className="mr-1" icon={faExclamationCircle} />
+                </div>
+            )
+        }
+        
+        return (
+            <div 
+                className="align-self-start" 
+                style={StatusIconValidStyle}
+                title="Действительный"
+            >
+                <FontAwesomeIcon className="mr-1" icon={faCheckCircle} />
+            </div>
+        )
+    }
+
     render () {
         const imageCounter = this.props.document.files.length < 2 ? null :
             (<div className="position-absolute bottom-0 end-0 py-0 px-1 m-0" style={ImageCounterStyle}>{this.props.document.files.length}</div>)
+
+        const statusIcon = this.getStatusIcon()
 
         return (
             <div className="card mb-3 bg-light me-4">
@@ -37,14 +87,17 @@ class DocumentItem extends React.Component {
                             <p style={{ fontSize: 12 }}>Добавлено: {this.props.document.date_create.substring(0, 10)}</p>
                         </div>
                     </div>
-                    <div className="align-self-end">
-                        <Button
-                            variant="link"
-                            style={EditButtonStyle}
-                            onClick={this.handleClick}
-                        >
-                            <FontAwesomeIcon className="mr-1" icon={faPencilAlt} />
-                        </Button>
+                    <div className="d-flex flex-column">
+                        { statusIcon }
+                        <div className="align-self-end">
+                            <Button
+                                variant="link"
+                                style={EditButtonStyle}
+                                onClick={this.handleClick}
+                            >
+                                <FontAwesomeIcon className="mr-1" icon={faPencilAlt} />
+                            </Button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -112,6 +165,20 @@ const EditButtonStyle = {
     right: '0',
     bottom: '0',
     margin: '12px',
+}
+
+const StatusIconValidStyle = {
+    right: '0',
+    top: '0',
+    margin: '12px',
+    color: '#553C8B',
+}
+
+const StatusIconInvalidStyle = {
+    right: '0',
+    top: '0',
+    margin: '12px',
+    color: '#dc3545',
 }
 
 const ImageCounterStyle = {
