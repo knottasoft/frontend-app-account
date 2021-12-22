@@ -719,7 +719,7 @@ class DesktopAccountSettingsPage extends React.Component {
               <span className="pe-1">📄</span>{this.props.intl.formatMessage(messages['account.settings.section.documents'])}
             </h2>
           </div>
-          <DocumentList/>
+          <DocumentList student_fio={this.props.formValues.name}/>
         </div>
         <hr className="mt-2 mb-3"/>
         <div className="account-section" id="delete-account" ref={this.navLinkRefs['#delete-account']}>

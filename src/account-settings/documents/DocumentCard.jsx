@@ -48,7 +48,7 @@ export class DocumentCard extends Component {
         if (e.isNewFile) {
             this.setState(prevState => ({
                 files: prevState.files.filter(el =>
-                    el.uploadedFile.name !== e.uploadedFile.name)
+                    el?.uploadedFile?.name !== e?.uploadedFile?.name)
             }));
         } else {
             const index = this.state.files.findIndex((obj => obj.id == e.id))
@@ -177,8 +177,11 @@ export class DocumentCard extends Component {
     }
 
     render() {
+        const noFiles = this.state.files.filter(file => !file.needDelete).length === 0
+
         const docType = this.props.docTypes.find(el => el.value === this.state.type)
         const isMobile = window.innerWidth < 768
+        
         const docStatus = this.getDocumentStatus()
         const docExpired = this.getDocumentExpired()
         const docValidationError = this.getValidationError()
@@ -239,6 +242,7 @@ export class DocumentCard extends Component {
                     <div className={"d-flex flex-row justify-content-start"}>
                         <div className="px-3">
                             <button className="btn btn-primary px-4 py-2"
+                                    disabled={noFiles}
                                     style={{ fontSize: 16, lineHeight: '124%' }}
                                     onClick={this.handleSave}
                             >Сохранить документ

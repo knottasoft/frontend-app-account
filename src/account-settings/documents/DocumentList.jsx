@@ -37,6 +37,7 @@ class DocumentList extends React.Component {
                 name: e.title,
                 description: e.type,
                 files: e.files,
+                student_fio: this.props.student_fio,
         })
     };
 
@@ -49,7 +50,10 @@ class DocumentList extends React.Component {
     };
 
     handleUpdate(e) {
-        this.props.updateStudentDocument(e);
+        this.props.updateStudentDocument({
+            ...e,
+            student_fio: this.props.student_fio,
+        });
     }
 
     getDocuments(documents) {
@@ -157,6 +161,7 @@ class DocumentList extends React.Component {
 }
 
 DocumentList.propTypes = {
+    student_fio: PropTypes.string,
     intl: intlShape.isRequired,
     getStudentDocuments: PropTypes.func.isRequired,
     studentDocumentCardAdd: PropTypes.func.isRequired,

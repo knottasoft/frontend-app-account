@@ -51,10 +51,11 @@ export function* handleGetStudentDocuments() {
 export function* handleCreateStudentDocument(action) {
     try{
         yield put(createStudentDocumentBegin());
-        const { userId } = getAuthenticatedUser();
+        const { userId, email } = getAuthenticatedUser();
         const data = {
             ...action.payload.document,
             student_id: userId,
+            email: email,
         }
         yield call(createStudentDocument, data);
         const response = yield call(getStudentDocuments, userId);
@@ -68,10 +69,11 @@ export function* handleCreateStudentDocument(action) {
 export function* handleUpdateStudentDocument(action) {
     try{
         yield put(updateStudentDocumentBegin());
-        const { userId } = getAuthenticatedUser();
+        const { userId, email } = getAuthenticatedUser();
         const data = {
             ...action.payload.updateInfo,
             student_id: userId,
+            email: email,
         }
         yield call(updateStudentDocument, data);
         const response = yield call(getStudentDocuments, userId);

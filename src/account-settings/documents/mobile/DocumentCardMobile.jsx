@@ -49,7 +49,7 @@ export class DocumentCard extends Component {
         if (e.isNewFile) {
             this.setState(prevState => ({
                 files: prevState.files.filter(el =>
-                    el.uploadedFile.name !== e.uploadedFile.name)
+                    el?.uploadedFile?.name !== e?.uploadedFile?.name)
             }));
         } else {
             const index = this.state.files.findIndex((obj => obj.id == e.id))
@@ -178,6 +178,8 @@ export class DocumentCard extends Component {
     }
 
     render() {
+        const noFiles = this.state.files.filter(file => !file.needDelete).length === 0
+
         const docType = this.props.docTypes.find(el => el.value === this.state.type)
         const isMobile = window.innerWidth < 768
 
@@ -239,6 +241,7 @@ export class DocumentCard extends Component {
                 </Modal.Body>
                 <div className={"row-cols-1 px-3 mb-3"}>
                     <button className="btn btn-primary"
+                            disabled={noFiles}
                             style={{ fontSize: 16, lineHeight: '124%' }}
                             onClick={this.handleSave}
                     >Сохранить документ

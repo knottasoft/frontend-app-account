@@ -15,6 +15,9 @@ export async function createStudentDocument(doc) {
     formData.append('name', doc.name)
     formData.append('description', doc.description)
     formData.append('student_id', doc.student_id)
+    formData.append('email', doc.email)
+    formData.append('student_fio', doc.student_fio)
+    formData.append('status', 'n')
 
     const { data } = await api
         .post(`/docs/`, formData)
@@ -33,6 +36,8 @@ export async function updateStudentDocument(updateInfo) {
     formData.append('name', updateInfo.title)
     formData.append('description', updateInfo.type)
     formData.append('student_id', updateInfo.student_id)
+    formData.append('email', updateInfo.email)
+    formData.append('student_fio', updateInfo.student_fio)
     formData.append('status', 'n')
 
     const { data } = await api

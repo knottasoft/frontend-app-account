@@ -23,7 +23,7 @@ class DocumentItem extends React.Component {
             return ( 
                 <div 
                     className="align-self-start" 
-                    style={StatusIconValidStyle}
+                    style={StatusIconVaitStyle}
                     title="На проверке"
                 >
                     <FontAwesomeIcon className="mr-1" icon={faClock} />
@@ -179,6 +179,13 @@ const StatusIconInvalidStyle = {
     top: '0',
     margin: '12px',
     color: '#dc3545',
+}
+
+const StatusIconVaitStyle = {
+    right: '0',
+    top: '0',
+    margin: '12px',
+    color: '#999999',
 }
 
 const ImageCounterStyle = {
