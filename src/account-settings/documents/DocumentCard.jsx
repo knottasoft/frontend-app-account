@@ -40,6 +40,7 @@ export class DocumentCard extends Component {
                     isNewFile: true,
                     uploadedFile: e,
                     uploadedFileUri: url,
+                    uploadTime : Math.floor(Date.now() / 1000),
                 }]
         }));
     }
@@ -48,7 +49,7 @@ export class DocumentCard extends Component {
         if (e.isNewFile) {
             this.setState(prevState => ({
                 files: prevState.files.filter(el =>
-                    el?.uploadedFile?.name !== e?.uploadedFile?.name)
+                    el?.uploadTime !== e?.uploadTime)
             }));
         } else {
             const index = this.state.files.findIndex((obj => obj.id == e.id))

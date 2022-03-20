@@ -8,12 +8,13 @@ class FileUploader extends React.Component {
     constructor(props) {
         super(props);
 
+        this.fileUploaderRef = React.createRef();
         this.handleClick = this.handleClick.bind(this);
         this.handleChange = this.handleChange.bind(this);
     }
 
     handleClick () {
-        this.refs.fileUploader.click();
+        this.fileUploaderRef.current.click();
     };
 
     handleChange (event) {
@@ -33,7 +34,7 @@ class FileUploader extends React.Component {
                     <input
                         type="file"
                         accept="image/*"
-                        ref="fileUploader"
+                        ref={this.fileUploaderRef}
                         onChange={this.handleChange}
                         style={{display:'none'}}
                     />
@@ -49,7 +50,7 @@ class FileUploader extends React.Component {
                     <input
                         type="file"
                         accept="image/*"
-                        ref="fileUploader"
+                        ref={this.fileUploaderRef}
                         onChange={this.handleChange}
                         style={{display:'none'}}
                     />

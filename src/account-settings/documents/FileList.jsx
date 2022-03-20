@@ -14,7 +14,7 @@ class FileList extends React.Component {
             f.needDelete ? null :
                 <FileItem
                     key={ f.isNewFile ?
-                        f.uploadedFileUri :
+                        f.uploadTime :
                         f.thumbnail}
                     file={f}
                     onDelete={this.props.onDelete}
